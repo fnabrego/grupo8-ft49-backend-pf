@@ -9,7 +9,9 @@ import {
 } from '@nestjs/common';
 import { LocalitiesService } from './localities.service';
 import { LocalityDto } from './localities.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Localities')
 @Controller('localities')
 export class LocalitiesController {
   constructor(private readonly localitiesService: LocalitiesService) {}

@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { UsersRepository } from 'src/users/users.repository';
-import { Users } from 'src/users/users.entity';
+import { User } from 'src/users/users.entity';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 
@@ -11,7 +11,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async signUp(user: Partial<Users>) {
+  async signUp(user: Partial<User>) {
     const { email, password } = user;
 
     const foundedUser = await this.userRepository.getUserByEmail(email);

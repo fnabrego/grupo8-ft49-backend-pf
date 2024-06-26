@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put } from '@nestjs/common';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
 import { OrdersService } from './orders.service';
-import { Orders } from './orders.entity';
+import { Order } from './orders.entity';
 import { CreateOrderDto } from './orders.dto';
 
 @ApiTags('Orders')
@@ -30,7 +30,7 @@ export class OrdersController {
     }
 
     @Put()
-    updateOrder(@Param('id', ParseUUIDPipe) id: string, @Body() order: Partial<Orders>) {
+    updateOrder(@Param('id', ParseUUIDPipe) id: string, @Body() order: Partial<Order>) {
         return this.ordersService.updateOrder(id, order);
     }
 

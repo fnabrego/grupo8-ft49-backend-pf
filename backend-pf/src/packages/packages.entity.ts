@@ -1,9 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Order } from "../orders/orders.entity";
 
 @Entity({
     name: "packages"
 })
-export class Packages {
+export class Package {
     /**
      * Primary generated column, type uuid
      */
@@ -63,4 +64,9 @@ export class Packages {
         nullable: false,
     })
     package_price: number
+
+    @ManyToOne(() => Order, (order) => order.receipt)
+    @JoinColumn({ name: 'order_id' })
+    orders: Order;
+
 }

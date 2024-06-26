@@ -6,15 +6,24 @@ import {
   OneToMany,
 } from 'typeorm';
 import { Role } from 'src/roles/roles.enum';
-import { Orders } from '../orders/orders.entity';
+import { Order } from '../orders/orders.entity';
+import { Receipt } from '../receipts/receipts.entity';
 
 @Entity({
   name: 'users',
 })
-export class Users {
+export class User {
+  /**
+   * @description ID de identificacion
+   * @example 'd290f1ee-6c54-4b01-90e6-d701748f0851'
+   */
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  /**
+   * @description El Email del usuario
+   * @example 'user@example.com'
+   */
   @Column({
     type: 'varchar',
     length: 50,
@@ -23,23 +32,34 @@ export class Users {
   })
   email: string;
 
+  /**
+   * @description La contraseña del usuario
+   * @example 'strongPassword123!'
+   */
   @Column({
     type: 'varchar',
     length: 200,
     nullable: false,
   })
   password: string;
-  hacer;
 
+  /**
+   * @description DNI del usuario
+   * @example 12345678
+   */
   @Column({
-    type: 'int',
+    type: 'varchar',
   })
-  dni: number;
+  dni: string;
 
+  /**
+   * @description El CUIT o CUIL del usuario
+   * @example 20304050607
+   */
   @Column({
-    type: 'int',
+    type: 'varchar',
   })
-  cuit_cuil: number;
+  cuit_cuil: string;
 
   @Column({
     type: 'varchar',
@@ -60,7 +80,11 @@ export class Users {
   })
   role: Role;
 
-  @OneToMany(() => Orders, (order) => order.user)
+  @OneToMany(() => Order, (order) => order.user)
   @JoinColumn()
-  orders: Orders[];
+  orders: Order[];
+
+  @OneToMany(() => Receipt, (receipt) => receipt.user)
+  @JoinColumn()
+  receipt: Receipt;
 }

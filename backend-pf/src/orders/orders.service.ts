@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { OrdersRepository } from './orders.reposirory';
-import { Orders } from './orders.entity';
+import { Order } from './orders.entity';
 import { CreateOrderDto } from './orders.dto';
 
 @Injectable()
@@ -17,7 +17,7 @@ export class OrdersService {
         return this.ordersRepository.addOrder(order);
     }
 
-    updateOrder(id: string, order: Partial<Orders>) {
+    updateOrder(id: string, order: Partial<Order>) {
         return this.ordersRepository.updateOrder(id, order);
     }
 

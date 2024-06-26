@@ -10,6 +10,7 @@ export class AuthController {
 
   @Post('signup')
   signUp(@Body() user: CreateUserDto) {
+    delete user.confirmPassword;
     return this.authService.signUp(user);
   }
 

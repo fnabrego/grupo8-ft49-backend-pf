@@ -15,7 +15,7 @@ import { CreateUserDto } from './users.dto';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/roles/roles.enum';
 import { RoleDto } from 'src/roles/roles.dto';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 
@@ -24,8 +24,9 @@ import { RolesGuard } from 'src/auth/guards/roles.guard';
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
-  @ApiBearerAuth()
   @Get()
+  @ApiQuery({ name: 'page', required: false, type: Number })
+  @ApiQuery({ name: 'limit', required: false, type: Number })
   getUsers(@Query('page') page: number = 1, @Query('limit') limit: number = 2) {
     if (page && limit) return this.userService.getUsers(page, limit);
 

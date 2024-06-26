@@ -10,7 +10,9 @@ import {
 } from '@nestjs/common';
 import { ShipmentsService } from './shipments.service';
 import { ShipmentDto } from './shipments.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Shipments')
 @Controller('shipments')
 export class ShipmentsController {
   constructor(private readonly shipmentsService: ShipmentsService) {}

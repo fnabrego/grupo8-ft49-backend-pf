@@ -4,9 +4,11 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { v4 as uuid } from 'uuid';
+import { Order } from '../orders/orders.entity';
 
 @Entity({
   name: 'shipments',
@@ -17,6 +19,10 @@ export class Shipment {
    */
   @PrimaryGeneratedColumn('uuid')
   id: string = uuid();
+
+  @OneToOne(() => Order, (order) => order.shipments)
+  @JoinColumn()
+  orders: Order;
 
   /**
    * Localidad de origen del envío.
