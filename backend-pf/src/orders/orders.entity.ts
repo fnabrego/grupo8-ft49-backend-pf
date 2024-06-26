@@ -7,31 +7,31 @@ import {
     ManyToOne,
     OneToOne,
 } from 'typeorm';
-import { Users } from 'src/users/users.entity';
-import { Shipment } from 'src/shipment/shipments.entity';
-import { Packages } from 'src/packages/packages.entity';
-import { Receipts } from 'src/receipt/receipt.entity';
+import { User } from 'src/users/users.entity';
+import { Shipment } from '../shipments/shipments.entity';
+import { Package } from 'src/packages/packages.entity';
+import { Receipt } from '../receipts/receipts.entity';
 
 @Entity({
     name: 'orders',
 })
-export class Orders {
+export class Order {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @ManyToOne(() => Users, (user) => user.orders)
+    @ManyToOne(() => User, (user) => user.orders)
     @JoinColumn({ name: 'user_id' })
-    user: Users;
+    user: User;
 
     @OneToOne(() => Shipment, (shipment) => shipment.orders)
     shipments: Shipment;
 
-    @OneToMany(() => Packages, (packages) => packages.orders)
+    @OneToMany(() => Package, (packages) => packages.orders)
     @JoinColumn({ name: 'packages_id' })
-    packages: Packages[];
+    packages: Package[];
 
-    @OneToOne(() => Receipts, (receipt) => receipt.orders)
-    receipt: Receipts;
+    @OneToOne(() => Receipt, (receipt) => receipt.orders)
+    receipt: Receipt;
 
     @Column()
     date: Date;

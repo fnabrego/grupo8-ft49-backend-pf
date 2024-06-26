@@ -1,17 +1,17 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Packages } from "./packages.entity";
+import { Package } from "./packages.entity";
 import { Repository } from "typeorm";
 import { PackageDto } from "./packages.dto";
 
 @Injectable()
 export class PackagesRepository {
     constructor (
-        @InjectRepository(Packages)
-        private packagesRepository: Repository<Packages>
+        @InjectRepository(Package)
+        private packagesRepository: Repository<Package>
     ){}
 
-    async getPackages(page: number, limit: number): Promise<Packages[]> {
+    async getPackages(page: number, limit: number): Promise<Package[]> {
         if (page < 1 || limit < 1) {
             throw new Error('Page and limit must be greater than 0.');
         }
@@ -25,7 +25,7 @@ export class PackagesRepository {
         return packages;
     }
 
-    async getPackage(id:string): Promise<Packages> {
+    async getPackage(id:string): Promise<Package> {
         const packagedb = await this.packagesRepository.findOneBy({id});
         if(!packagedb) {
             throw new NotFoundException(`Package with id ${id} not found`)
@@ -35,13 +35,13 @@ export class PackagesRepository {
     }
 
     //funcion ficticia para calcular el precio, debe ser actualizada con la logica real cuando sepamos bien como calcula el cliente el precio de cada paquete
-    private calculatePrice(addpackage: Partial<Packages>){
+    private calculatePrice(addpackage: Partial<Package>){
         const weigth = addpackage.weigth;
         const price = weigth * 10;
         return price;
     }
 
-    async addPackage(addpackage: Partial<Packages>): Promise<Packages>{
+    async addPackage(addpackage: Partial<Package>): Promise<Package>{
         const calculatedPrice = await this.calculatePrice(addpackage);
 
         addpackage.package_price = calculatedPrice;

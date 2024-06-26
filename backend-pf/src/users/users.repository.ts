@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Users } from './users.entity';
+import { User } from './users.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
 export class UsersRepository {
   constructor(
-    @InjectRepository(Users) private usersRepository: Repository<Users>,
+    @InjectRepository(User) private usersRepository: Repository<User>,
   ) {}
 
   async getUsers(page: number, limit: number) {
@@ -32,7 +32,7 @@ export class UsersRepository {
     return userNoPassword;
   }
 
-  async createUser(user: Partial<Users>): Promise<Partial<Users>> {
+  async createUser(user: Partial<User>): Promise<Partial<User>> {
     const newUser = await this.usersRepository.save(user);
 
     const dbUser = await this.usersRepository.findOneBy({ id: newUser.id });
@@ -42,7 +42,7 @@ export class UsersRepository {
     return userNoPasswords;
   }
 
-  async updateUser(id: string, user: Users): Promise<Partial<Users>> {
+  async updateUser(id: string, user: User): Promise<Partial<User>> {
     await this.usersRepository.update(id, user);
     const updatedUser = await this.usersRepository.findOneBy({ id });
     const { password, ...userNoPasswords } = updatedUser;
@@ -50,7 +50,7 @@ export class UsersRepository {
     return userNoPasswords;
   }
 
-  async updateRoleUser(id: string, user: Users): Promise<Partial<Users>> {
+  async updateRoleUser(id: string, user: User): Promise<Partial<User>> {
     await this.usersRepository.update(id, user);
     const updatedUser = await this.usersRepository.findOneBy({ id });
     const { password, ...userNoPasswords } = updatedUser;

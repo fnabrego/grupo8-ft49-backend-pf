@@ -1,21 +1,21 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { Orders } from "./orders.entity";
-import { Users } from "../users/users.entity";
+import { Order } from "./orders.entity";
+import { User } from "../users/users.entity";
 import { Shipment } from '../shipments/shipments.entity';
-import { Packages } from '../packages/packages.entity';
-import { Receipts } from '../receipt/receipt.entity';
+import { Package } from '../packages/packages.entity';
+import { Receipt } from "../receipts/receipts.entity";
 import { CreateOrderDto } from "./orders.dto";
 
 @Injectable()
 export class OrdersRepository {
     constructor(
-        @InjectRepository(Orders) private ordersRepo: Repository<Orders>,
-        @InjectRepository(Users) private usersRepo: Repository<Users>,
+        @InjectRepository(Order) private ordersRepo: Repository<Order>,
+        @InjectRepository(User) private usersRepo: Repository<User>,
         @InjectRepository(Shipment) private shipmentRepo: Repository<Shipment>,
-        @InjectRepository(Packages) private packagesRepo: Repository<Packages>,
-        @InjectRepository(Receipts) private receiptsRepo: Repository<Receipts>,
+        @InjectRepository(Package) private packagesRepo: Repository<Package>,
+        @InjectRepository(Receipt) private receiptsRepo: Repository<Receipt>,
     ) { }
 
     async getOrder(id: string) {
@@ -35,7 +35,7 @@ export class OrdersRepository {
         return 'nueva orden';
     }
 
-    async updateOrder(id: string, order: Partial<Orders>) {
+    async updateOrder(id: string, order: Partial<Order>) {
         return 'modificacion de orden';
     }
 
