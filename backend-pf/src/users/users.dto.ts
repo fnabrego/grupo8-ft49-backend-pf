@@ -1,3 +1,4 @@
+import { PickType } from '@nestjs/swagger';
 import {
   IsEmail,
   IsEnum,
@@ -63,3 +64,7 @@ export class CreateUserDto {
   @IsEnum(Role)
   role: Role;
 }
+export class LoginUserDto extends PickType(CreateUserDto, [
+  'email',
+  'password',
+]) {}
