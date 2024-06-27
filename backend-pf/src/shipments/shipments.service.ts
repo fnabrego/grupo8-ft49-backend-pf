@@ -17,4 +17,7 @@ export class ShipmentsService {
   deleteShipments(id: string) {
     return this.shipmentsRepository.deleteShipments(id);
   }
+  preloadShipmentPrices() {
+    return this.shipmentsRepository.preloadShipmentPrices();
+  }
 }

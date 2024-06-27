@@ -1,3 +1,4 @@
+import { ShippingPrice } from 'src/shipments/prices/shippingprices.entity';
 import { Shipment } from 'src/shipments/shipments.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -29,4 +30,10 @@ export class Locality {
    */
   @OneToMany(() => Shipment, (shipment) => shipment.locality_destination)
   shipment_destination: Shipment[];
+
+  @OneToMany(() => ShippingPrice, (shippingPrice) => shippingPrice.origin)
+  originShippingPrices: ShippingPrice[];
+
+  @OneToMany(() => ShippingPrice, (shippingPrice) => shippingPrice.destination)
+  destinationShippingPrices: ShippingPrice[];
 }

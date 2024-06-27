@@ -7,13 +7,18 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Shipment } from './shipments.entity';
 import { ShipmentDto } from './shipments.dto';
+import * as prices from '../utils/data.json';
+import { ShippingPrice } from './prices/shippingprices.entity';
 import { Locality } from 'src/localities/localities.entity';
+import { log } from 'console';
 
 @Injectable()
 export class ShipmentsRepository {
   constructor(
     @InjectRepository(Shipment)
     private shipmentRepository: Repository<Shipment>,
+    @InjectRepository(ShippingPrice)
+    private shippingPriceRepository: Repository<ShippingPrice>,
     @InjectRepository(Locality)
     private localityRepository: Repository<Locality>,
   ) {}
@@ -23,14 +28,25 @@ export class ShipmentsRepository {
     }
 
     const skip = (page - 1) * limit;
-    let shipments = await this.shipmentRepository.find({
+    const shipments = await this.shipmentRepository.find({
       take: limit,
       skip: skip,
     });
 
     return shipments;
   }
-  async postShipments(data: ShipmentDto): Promise<Shipment> {
+  async postShipments(data: ShipmentDto) /*: Promise<Shipment>*/ {
+    const { locality_origin, locality_destination } = data;
+    // console.log(locality_origin);
+    console.log(locality_destination);
+    const shippingprice = await this.shippingPriceRepository.findOne({
+      where: {
+        origin: { id: locality_origin.id },
+        destination: { id: locality_destination.id },
+      },
+    });
+    console.log(shippingprice);
+    data.shipment_price = shippingprice.price;
     return await this.shipmentRepository.save(data);
   }
   async putShipments(id: string, data: ShipmentDto): Promise<Shipment> {
@@ -46,5 +62,23 @@ export class ShipmentsRepository {
       throw new NotFoundException(`Shipment with id ${id} not found`);
     await this.shipmentRepository.remove(shipment);
     return shipment;
+  }
+  async preloadShipmentPrices() {
+    for (const origin in prices) {
+      for (const destination in prices[origin]) {
+        const price = prices[origin][destination];
+        const localityOrigin = await this.localityRepository.findOneBy({
+          name: origin,
+        });
+        const localityDestination = await this.localityRepository.findOneBy({
+          name: destination,
+        });
+        const shippingPrice = new ShippingPrice();
+        shippingPrice.origin = localityOrigin;
+        shippingPrice.destination = localityDestination;
+        shippingPrice.price = price;
+        await this.shippingPriceRepository.save(shippingPrice);
+      }
+    }
   }
 }
