@@ -1,4 +1,11 @@
-import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
+import {
+  IsEmpty,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 import { Locality } from 'src/localities/localities.entity';
 
 export class ShipmentDto {
@@ -35,4 +42,8 @@ export class ShipmentDto {
   @MinLength(3)
   @MaxLength(80)
   address_destination: string;
+
+  @IsEmpty()
+  @IsNumber()
+  shipment_price: number;
 }

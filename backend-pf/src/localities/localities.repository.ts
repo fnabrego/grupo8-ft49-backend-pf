@@ -7,6 +7,7 @@ import { LocalityDto } from './localities.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Locality } from './localities.entity';
 import { Repository } from 'typeorm';
+import * as data from '../utils/localities.json';
 
 @Injectable()
 export class LocalitiesRepository {
@@ -19,7 +20,9 @@ export class LocalitiesRepository {
   }
   async postLocalities(data: LocalityDto): Promise<Locality> {
     const { name } = data;
-    const existingLocality = await this.localityRepository.findOne({ where: { name } });
+    const existingLocality = await this.localityRepository.findOne({
+      where: { name },
+    });
     if (existingLocality) {
       throw new BadRequestException(`Locality '${name}' already exists`);
     }
@@ -39,5 +42,17 @@ export class LocalitiesRepository {
       throw new NotFoundException(`Locality with id ${id} not found`);
     await this.localityRepository.remove(locality);
     return locality;
+  }
+  async preloadLocalities() {
+    data?.map(async (element) => {
+      await this.localityRepository
+        .createQueryBuilder()
+        .insert()
+        .into(Locality)
+        .values({ name: element })
+        .orIgnore()
+        .execute();
+    });
+    return 'Localities added successfully';
   }
 }

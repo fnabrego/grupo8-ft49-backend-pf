@@ -7,12 +7,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Shipment } from './shipments.entity';
 import { ShipmentDto } from './shipments.dto';
+import { Locality } from 'src/localities/localities.entity';
 
 @Injectable()
 export class ShipmentsRepository {
   constructor(
     @InjectRepository(Shipment)
     private shipmentRepository: Repository<Shipment>,
+    @InjectRepository(Locality)
+    private localityRepository: Repository<Locality>,
   ) {}
   async getShipments(page: number, limit: number): Promise<Shipment[]> {
     if (page < 1 || limit < 1) {

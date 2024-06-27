@@ -47,4 +47,9 @@ export class LocalitiesController {
   async deleteLocalities(@Param('id') id: number) {
     return await this.localitiesService.deleteLocalities(id);
   }
+
+  @Get('seeder')
+  async preloadLocalities() {
+    return await this.localitiesService.preloadLocalities();
+  }
 }
