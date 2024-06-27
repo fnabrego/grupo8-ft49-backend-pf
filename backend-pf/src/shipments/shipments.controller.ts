@@ -31,8 +31,8 @@ export class ShipmentsController {
     );
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard)
+  // @ApiBearerAuth()
+  // @UseGuards(AuthGuard)
   @Post('add')
   async postShipments(@Body() data: ShipmentDto) {
     return await this.shipmentsService.postShipments(data);
@@ -53,5 +53,10 @@ export class ShipmentsController {
   @Delete(':id')
   async deleteShipments(@Param('id', ParseUUIDPipe) id: string) {
     return await this.shipmentsService.deleteShipments(id);
+  }
+
+  @Get('prices/seeder')
+  async preloadShipmentPrices() {
+    return await this.shipmentsService.preloadShipmentPrices();
   }
 }

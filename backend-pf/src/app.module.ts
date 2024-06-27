@@ -30,7 +30,7 @@ import { AuthModule } from './auth/auth.module';
     ShipmentsModule,
     LocalitiesModule,
     OrdersModule,
-    ReceiptsModule,
+    // ReceiptsModule,
 
     JwtModule.register({
       global: true,

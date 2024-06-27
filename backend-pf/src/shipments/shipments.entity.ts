@@ -36,7 +36,7 @@ export class Shipment {
    * Localidad de destino del envío.
    * @example San Martín
    */
-  @ManyToOne(() => Locality, (locality) => locality.id)
+  @ManyToOne(() => Locality, (locality) => locality.shipment_destination)
   @JoinColumn({ name: 'locality_destination' })
   locality_destination: Locality;
 

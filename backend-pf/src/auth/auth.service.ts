@@ -50,6 +50,7 @@ export class AuthService {
     return {
       message: 'Logged in User',
       token,
+      userId: user.id,
     };
   }
 }
