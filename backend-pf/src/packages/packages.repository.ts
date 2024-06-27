@@ -4,13 +4,50 @@ import { Package } from "./packages.entity";
 import { Repository } from "typeorm";
 import { PackageDto } from "./packages.dto";
 import { PackageSize } from "./packages.enum";
+import { PackagePrices } from "./prices.entity";
+import * as data from '../utils/packagesprices.json';
+import { PackagePricesDto } from "./prices.dto";
 
 @Injectable()
 export class PackagesRepository {
     constructor (
         @InjectRepository(Package)
-        private packagesRepository: Repository<Package>
+        private packagesRepository: Repository<Package>,
+        @InjectRepository(PackagePrices)
+        private packagePricesRepository: Repository<PackagePrices>
     ){}
+
+    async preloadPrices(){
+        data?.map(async (element) => {
+            await this.packagePricesRepository
+                .createQueryBuilder()
+                .insert()
+                .into(PackagePrices)
+                .values({
+                    ENVELOP: element.ENVELOP,
+                    SMALL: element.SMALL,
+                    MEDIUM: element.MEDIUM,
+                    LARGE: element.LARGE
+                })
+                .orIgnore()
+                .execute();
+        });
+        return 'Package prices added successfully';
+    }
+
+    async updatePrice(updatepackage: Partial<PackagePricesDto>){
+        let packagePrices = await this.packagePricesRepository.find();
+        if (packagePrices.length === 0) {
+            packagePrices = [new PackagePrices()];
+        }
+
+        packagePrices[0].ENVELOP = updatepackage.ENVELOP;
+        packagePrices[0].SMALL = updatepackage.SMALL;
+        packagePrices[0].MEDIUM = updatepackage.MEDIUM;
+        packagePrices[0].LARGE = updatepackage.LARGE;
+
+        return await this.packagePricesRepository.save(packagePrices[0]);
+    }
 
     async getPackages(page: number, limit: number): Promise<Package[]> {
         if (page < 1 || limit < 1) {

@@ -14,6 +14,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { PackagesService } from './packages.service';
 import { PackageDto } from './packages.dto';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { PackagePricesDto } from './prices.dto';
 
 @ApiTags('Packages')
 @Controller('packages')
@@ -27,6 +28,11 @@ export class PackagesController {
     return this.packagesService.getPackages(Number(page), Number(limit));
   }
 
+  @Get('price/seeder')
+  preloadPrices(){
+    return this.packagesService.preloadPrices()
+  }
+
   @Get(':id')
   getPackage(@Param('id', ParseUUIDPipe) id: string) {
     return this.packagesService.getPackage(id);
@@ -35,6 +41,13 @@ export class PackagesController {
   @Post()
   addPackage(@Body() addpackage: PackageDto) {
     return this.packagesService.addPackage(addpackage);
+  }
+
+  @Put('price')
+  updatePrice(
+    @Body() updatePrice: Partial<PackagePricesDto>
+  ){
+    return this.packagesService.updatePrice(updatePrice);
   }
 
   @Put(':id')
