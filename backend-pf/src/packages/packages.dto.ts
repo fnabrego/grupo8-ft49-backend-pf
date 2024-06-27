@@ -1,44 +1,33 @@
-import { Type } from "class-transformer"
-import { IsNotEmpty, IsNumber, IsString } from "class-validator"
+import { IsIn, IsNotEmpty, IsNumber, IsString } from "class-validator"
+import { PackageSize, PackageType } from "./packages.enum";
 
 export class PackageDto {
     /**
-     * Package type, can be a box, an envelop, or a bag
+     * Package type, must be one of the 5 valid types of packages
+     * @example ENVELOPE
      */
     @IsNotEmpty()
     @IsString()
-    type: string
+    @IsIn([
+        PackageType.ENVELOPE,
+        PackageType.PACKAGE,
+        PackageType.PALLET,
+        PackageType.WINE_BOX,
+        PackageType.OTHER,
+    ])
+    type: PackageType;
 
     /**
-     * Package width
+     * Package size, must be one of the 3 valid types of packages
+     * @example MEDIUM
      */
     @IsNotEmpty()
-    @IsNumber()
-    @Type(()=> Number)
-    width: number
-
-    /**
-     * Package length
-     */
-    @IsNotEmpty()
-    @IsNumber()
-    @Type(()=> Number)
-    length: number
-
-    /**
-     * Package heigth
-     */
-    @IsNotEmpty()
-    @IsNumber()
-    @Type(()=> Number)
-    heigth: number
-
-    /**
-     * Package weigth
-     */
-    @IsNotEmpty()
-    @IsNumber()
-    @Type(()=> Number)
-    weigth: number
+    @IsString()
+    @IsIn([
+        PackageSize.SMALL,
+        PackageSize.MEDIUM,
+        PackageSize.LARGE,
+    ])
+    size: PackageSize;
 
 }

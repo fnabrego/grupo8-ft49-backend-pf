@@ -19,8 +19,10 @@ export class LocalitiesRepository {
   }
   async postLocalities(data: LocalityDto): Promise<Locality> {
     const { name } = data;
-    if (name)
+    const existingLocality = await this.localityRepository.findOne({ where: { name } });
+    if (existingLocality) {
       throw new BadRequestException(`Locality '${name}' already exists`);
+    }
     const locality = await this.localityRepository.save(data);
     return locality;
   }

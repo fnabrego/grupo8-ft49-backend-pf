@@ -5,8 +5,8 @@ import { ShipmentsRepository } from './shipments.repository';
 @Injectable()
 export class ShipmentsService {
   constructor(private readonly shipmentsRepository: ShipmentsRepository) {}
-  getShipments() {
-    return this.shipmentsRepository.getShipments();
+  getShipments(page: number, limit: number) {
+    return this.shipmentsRepository.getShipments(page, limit);
   }
   postShipments(data: ShipmentDto) {
     return this.shipmentsRepository.postShipments(data);

@@ -1,8 +1,9 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Package } from "./packages.entity";
 import { Repository } from "typeorm";
 import { PackageDto } from "./packages.dto";
+import { PackageSize, PackageType } from "./packages.enum";
 
 @Injectable()
 export class PackagesRepository {
@@ -13,7 +14,7 @@ export class PackagesRepository {
 
     async getPackages(page: number, limit: number): Promise<Package[]> {
         if (page < 1 || limit < 1) {
-            throw new Error('Page and limit must be greater than 0.');
+            throw new BadRequestException('Page and limit must be greater than 0.');
         }
 
         const skip = (page -1) * limit;
@@ -36,8 +37,22 @@ export class PackagesRepository {
 
     //funcion ficticia para calcular el precio, debe ser actualizada con la logica real cuando sepamos bien como calcula el cliente el precio de cada paquete
     private calculatePrice(addpackage: Partial<Package>){
-        const weigth = addpackage.weigth;
-        const price = weigth * 10;
+        let price = 0;
+
+        switch(addpackage.size) {
+            case PackageSize.SMALL:
+                price = 10;
+                break;         
+            case PackageSize.MEDIUM:
+                price = 20;
+                break;
+            case PackageSize.LARGE:
+                price = 30;
+                break;
+            default:
+                throw new BadRequestException('package size is not small, medium or large')
+        }
+        
         return price;
     }
 
@@ -51,6 +66,10 @@ export class PackagesRepository {
     }
 
     async updatePackage(id: string, updatepackage: Partial<PackageDto>) {
+        const existingPackage = await this.packagesRepository.findOneBy({id})
+        if (!existingPackage) {
+            throw new NotFoundException(`Package with id ${id} not found`)
+        }
         await this.packagesRepository.update(id, updatepackage);
         const updatedPackage = await this.packagesRepository.findOneBy({id});
         return updatedPackage;

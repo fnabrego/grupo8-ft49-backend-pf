@@ -1,5 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Order } from "../orders/orders.entity";
+import { PackageSize, PackageType } from "./packages.enum";
 
 @Entity({
     name: "packages"
@@ -12,49 +13,26 @@ export class Package {
     id:string
 
     /**
-     * Package type, not nullable
+     * Package type, enum, not nullable.
+     * @example ENVELOP
      */
     @Column({
-        type: "varchar",
+        type: "enum",
+        enum: PackageType,
         nullable: false,
     })
-    type: string
+    type: PackageType
 
     /**
-     * Package width, not nullable, type int
+     * Package size, enum, not nullable.
+     * @example MEDIUM
      */
     @Column({
-        type: "int",
-        nullable: false,
-    })
-    width: number
-
-    /**
-     * Package height, not nullable, type int
-     */
-    @Column({
-        type: "int",
-        nullable: false,
-    })
-    height: number
-
-    /**
-     * Package length, not nullable, type int
-     */
-    @Column({
-        type: "int",
-        nullable: false,
-    })
-    length: number
-
-    /**
-     * Package weigth, not nullable, type int
-     */
-    @Column({
-        type: "int",
+        type: "enum",
+        enum: PackageSize,
         nullable: false
     })
-    weigth: number
+    size: PackageSize
 
     /**
      * Package price, not nullable, type int
