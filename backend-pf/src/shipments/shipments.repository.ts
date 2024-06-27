@@ -10,7 +10,6 @@ import { ShipmentDto } from './shipments.dto';
 import * as prices from '../utils/data.json';
 import { ShippingPrice } from './prices/shippingprices.entity';
 import { Locality } from 'src/localities/localities.entity';
-import { log } from 'console';
 
 @Injectable()
 export class ShipmentsRepository {
@@ -35,14 +34,14 @@ export class ShipmentsRepository {
 
     return shipments;
   }
-  async postShipments(data: ShipmentDto) /*: Promise<Shipment>*/ {
+  async postShipments(data: ShipmentDto): Promise<Shipment> {
     const { locality_origin, locality_destination } = data;
     // console.log(locality_origin);
     console.log(locality_destination);
     const shippingprice = await this.shippingPriceRepository.findOne({
       where: {
-        origin: { id: locality_origin.id },
-        destination: { id: locality_destination.id },
+        origin: locality_origin,
+        destination: locality_destination,
       },
     });
     console.log(shippingprice);
