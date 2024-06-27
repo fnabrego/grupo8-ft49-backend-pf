@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Order } from "../orders/orders.entity";
-import { PackageSize, PackageType } from "./packages.enum";
+import { PackageSize } from "./packages.enum";
 
 @Entity({
     name: "packages"
@@ -11,17 +11,6 @@ export class Package {
      */
     @PrimaryGeneratedColumn('uuid')
     id:string
-
-    /**
-     * Package type, enum, not nullable.
-     * @example ENVELOP
-     */
-    @Column({
-        type: "enum",
-        enum: PackageType,
-        nullable: false,
-    })
-    type: PackageType
 
     /**
      * Package size, enum, not nullable.
