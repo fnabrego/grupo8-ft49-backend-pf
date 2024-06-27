@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './users.entity';
 import { Repository } from 'typeorm';
@@ -10,6 +10,10 @@ export class UsersRepository {
   ) {}
 
   async getUsers(page: number, limit: number) {
+    if (page < 1 || limit < 1) {
+      throw new BadRequestException('Page and limit must be greater than 0.');
+    }
+    
     const skip = (page - 1) * limit;
     const users = await this.usersRepository.find({
       take: limit,
@@ -26,7 +30,7 @@ export class UsersRepository {
         orders: true,
       },
     });
-    if (!user) return `User with id: ( ${id} ) not found.`;
+    if (!user) throw new NotFoundException(`User with id: ( ${id} ) not found.`);
     const { password, ...userNoPassword } = user;
 
     return userNoPassword;
@@ -43,6 +47,10 @@ export class UsersRepository {
   }
 
   async updateUser(id: string, user: User): Promise<Partial<User>> {
+    const foundUser = await this.usersRepository.findOneBy({id})
+    if (!foundUser) {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
     await this.usersRepository.update(id, user);
     const updatedUser = await this.usersRepository.findOneBy({ id });
     const { password, ...userNoPasswords } = updatedUser;
@@ -51,6 +59,10 @@ export class UsersRepository {
   }
 
   async updateRoleUser(id: string, user: User): Promise<Partial<User>> {
+    const foundUser = await this.usersRepository.findOneBy({id})
+    if (!foundUser) {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
     await this.usersRepository.update(id, user);
     const updatedUser = await this.usersRepository.findOneBy({ id });
     const { password, ...userNoPasswords } = updatedUser;
@@ -58,6 +70,10 @@ export class UsersRepository {
     return userNoPasswords;
   }
   async getUserByEmail(email: string) {
-    return await this.usersRepository.findOneBy({ email });
+    const user = await this.usersRepository.findOneBy({ email });
+    if (!user) {
+      throw new NotFoundException(`${email} is not registered in the data base`)
+    }
+    return user
   }
 }

@@ -7,6 +7,7 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { ShipmentsService } from './shipments.service';
 import { ShipmentDto } from './shipments.dto';
@@ -18,8 +19,10 @@ export class ShipmentsController {
   constructor(private readonly shipmentsService: ShipmentsService) {}
 
   @Get()
-  async getLocalities() {
-    return await this.shipmentsService.getShipments();
+  async getLocalities(@Query('page') page: string, @Query('limit') limit: string) {
+    return await this.shipmentsService.getShipments(
+      Number(page), Number(limit)
+    );
   }
 
   @Post('add')
