@@ -9,18 +9,19 @@ import {
   Matches,
   MaxLength,
   MinLength,
-  Validate
+  Validate,
 } from 'class-validator';
 import { Role } from 'src/roles/roles.enum';
 import { MatchPassword } from '../decorators/matchPassword.decorator';
 
-
 export class CreateUserDto {
+  @IsEmpty()
+  @ApiHideProperty()
   id: string;
 
   @ApiProperty({
     description: 'Direccion Email',
-    example: 'user@example.com'
+    example: 'user@example.com',
   })
   @IsEmail()
   @IsNotEmpty()
@@ -29,12 +30,13 @@ export class CreateUserDto {
 
   @ApiProperty({
     description: 'Contraseña',
-    example: 'P@ssw0rd1234!'
+    example: 'P@ssw0rd1234!',
   })
   @IsNotEmpty()
   @IsString()
   @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/, {
-    message: 'La contraseña debe tener una letra mayuscula, una letra minuscula, un numero y un caracter especial: !@#$%^&* '
+    message:
+      'La contraseña debe tener una letra mayuscula, una letra minuscula, un numero y un caracter especial: !@#$%^&* ',
   })
   @MinLength(8)
   @MaxLength(15)
@@ -42,7 +44,7 @@ export class CreateUserDto {
 
   @ApiProperty({
     description: 'Confirmacion de contraseña',
-    example: 'P@ssw0rd1234!'
+    example: 'P@ssw0rd1234!',
   })
   @IsNotEmpty()
   @Validate(MatchPassword, ['password'])
@@ -50,21 +52,21 @@ export class CreateUserDto {
 
   @ApiProperty({
     description: 'DNI',
-    example: '34567876'
+    example: '34567876',
   })
   @IsString()
   dni: string;
 
   @ApiProperty({
     description: 'CUIT/CUIL para responsables inscriptos',
-    example: '23764539873'
+    example: '23764539873',
   })
   @IsString()
   cuit_cuil: string;
 
   @ApiProperty({
     description: 'Dirección',
-    example: '123 Main St'
+    example: '123 Main St',
   })
   @IsString()
   @IsOptional()
@@ -73,7 +75,7 @@ export class CreateUserDto {
 
   @ApiProperty({
     description: 'Localidad',
-    example: 'Springfield'
+    example: 'Springfield',
   })
   @IsString()
   @IsOptional()
@@ -89,4 +91,4 @@ export class CreateUserDto {
 export class LoginUserDto extends PickType(CreateUserDto, [
   'email',
   'password',
-]) { }
+]) {}
