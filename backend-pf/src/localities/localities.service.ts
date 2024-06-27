@@ -17,4 +17,7 @@ export class LocalitiesService {
   deleteLocalities(id: number) {
     return this.localitiesRepository.deleteLocalities(id);
   }
+  preloadLocalities() {
+    return this.localitiesRepository.preloadLocalities();
+  }
 }
