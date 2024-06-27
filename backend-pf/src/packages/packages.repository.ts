@@ -3,7 +3,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Package } from "./packages.entity";
 import { Repository } from "typeorm";
 import { PackageDto } from "./packages.dto";
-import { PackageSize, PackageType } from "./packages.enum";
+import { PackageSize } from "./packages.enum";
 
 @Injectable()
 export class PackagesRepository {
@@ -40,6 +40,9 @@ export class PackagesRepository {
         let price = 0;
 
         switch(addpackage.size) {
+            case PackageSize.ENVELOP:
+                price = 5;
+                break;
             case PackageSize.SMALL:
                 price = 10;
                 break;         

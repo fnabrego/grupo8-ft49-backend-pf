@@ -33,6 +33,39 @@ export class User {
   email: string;
 
   /**
+   * @description El nombre del usuario
+   * @example 'Pedro'
+   */
+  @Column({
+    type: 'varchar',
+    length: 30,
+    nullable: false
+  })
+  name: string;
+
+  /**
+   * @description El apellido del usuario
+   * @example 'Gomez'
+   */
+  @Column({
+    type: 'varchar',
+    length: 30,
+    nullable: false
+  })
+  lastName: string;
+
+  /**
+   * @description El nombre de la empresa a la que representa el usuario en caso de hacerlo
+   * @example 'Gucci'
+   */
+  @Column({
+    type: 'varchar',
+    length: 50,
+    nullable: false
+  })
+  companyName: string;
+
+  /**
    * @description La contraseña del usuario
    * @example 'strongPassword123!'
    */
