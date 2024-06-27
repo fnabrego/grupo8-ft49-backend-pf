@@ -1,7 +1,7 @@
 import { ShippingPrice } from 'src/shipments/prices/shippingprices.entity';
 import { Shipment } from 'src/shipments/shipments.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-
+// import { v4 as uuid } from 'uuid';
 @Entity({
   name: 'localities',
 })

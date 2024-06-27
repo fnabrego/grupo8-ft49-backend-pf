@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
-import { UsersController } from './users/users.controller';
+// import { UsersController } from './users/users.controller';
 import { OrdersModule } from './orders/orders.module';
 import { PackagesModule } from './packages/packages.module';
 import { ShipmentsModule } from './shipments/shipments.module';
@@ -11,7 +11,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import typeorm from './config/typeorm';
-import { ReceiptsModule } from './receipts/receipts.module';
+// import { ReceiptsModule } from './receipts/receipts.module';
 import { AuthModule } from './auth/auth.module';
 
 @Module({

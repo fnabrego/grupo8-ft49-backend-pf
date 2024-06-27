@@ -39,7 +39,7 @@ export class LocalitiesRepository {
   async deleteLocalities(id: number) {
     const locality = await this.localityRepository.findOneBy({ id });
     if (!locality)
-      throw new NotFoundException(`Locality with id ${id} not found`);
+      throw new NotFoundException(`Locality ${locality.name} not found`);
     await this.localityRepository.remove(locality);
     return locality;
   }
