@@ -8,10 +8,12 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ShipmentsService } from './shipments.service';
 import { ShipmentDto } from './shipments.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
 
 @ApiTags('Shipments')
 @Controller('shipments')
@@ -19,27 +21,37 @@ export class ShipmentsController {
   constructor(private readonly shipmentsService: ShipmentsService) {}
 
   @Get()
-  async getLocalities(@Query('page') page: string, @Query('limit') limit: string) {
+  async getShipments(
+    @Query('page') page: string,
+    @Query('limit') limit: string,
+  ) {
     return await this.shipmentsService.getShipments(
-      Number(page), Number(limit)
+      Number(page),
+      Number(limit),
     );
   }
 
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
   @Post('add')
-  async postLocalities(@Body() data: ShipmentDto) {
+  async postShipments(@Body() data: ShipmentDto) {
     return await this.shipmentsService.postShipments(data);
   }
 
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
   @Put(':id')
-  async putLocalities(
+  async putShipments(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() data: ShipmentDto,
   ) {
     return await this.shipmentsService.putShipments(id, data);
   }
 
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
   @Delete(':id')
-  async deleteLocalities(@Param('id', ParseUUIDPipe) id: string) {
+  async deleteShipments(@Param('id', ParseUUIDPipe) id: string) {
     return await this.shipmentsService.deleteShipments(id);
   }
 }

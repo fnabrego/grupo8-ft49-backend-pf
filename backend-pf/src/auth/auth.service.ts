@@ -27,7 +27,7 @@ export class AuthService {
   }
 
   async signIn(email: string, password: string) {
-    if (!email || !password) return 'Emmail y password required';
+    if (!email || !password) return 'Email y password required';
 
     const user = await this.userRepository.getUserByEmail(email);
 
