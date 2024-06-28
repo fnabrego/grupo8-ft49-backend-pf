@@ -18,8 +18,6 @@ import { PackagePricesDto } from './prices.dto';
 
 @ApiTags('Packages')
 @Controller('packages')
-@ApiBearerAuth()
-@UseGuards(AuthGuard)
 export class PackagesController {
   constructor(private readonly packagesService: PackagesService) {}
 
@@ -29,8 +27,8 @@ export class PackagesController {
   }
 
   @Get('price/seeder')
-  preloadPrices(){
-    return this.packagesService.preloadPrices()
+  preloadPrices() {
+    return this.packagesService.preloadPrices();
   }
 
   @Get(':id')
@@ -44,16 +42,14 @@ export class PackagesController {
   }
 
   @Put('price')
-  updatePrice(
-    @Body() updatePrice: Partial<PackagePricesDto>
-  ){
+  updatePrice(@Body() updatePrice: PackagePricesDto) {
     return this.packagesService.updatePrice(updatePrice);
   }
 
   @Put(':id')
   updatePackage(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() updatepackage: Partial<PackageDto>,
+    @Body() updatepackage: PackageDto,
   ) {
     return this.packagesService.updatePackage(id, updatepackage);
   }

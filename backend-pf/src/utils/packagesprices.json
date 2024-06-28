@@ -1,8 +1,8 @@
 [
-    {
-        "ENVELOP": 1000,
-        "SMALL": 2000,
-        "MEDIUM": 3000,
-        "LARGE": 4000
-    }
+  {
+    "ENVELOP": 500,
+    "SMALL": 1000,
+    "MEDIUM": 2000,
+    "LARGE": 3000
+  }
 ]

@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 import { Order } from '../orders/orders.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity({
   name: 'shipments',
@@ -24,18 +25,18 @@ export class Shipment {
   @JoinColumn()
   orders: Order;
 
-  /**
-   * Localidad de origen del envío.
-   * @example Rivadavia
-   */
+  @ApiProperty({
+    example: { id: 1 },
+    description: 'Numeric ID of the origin location',
+  })
   @ManyToOne(() => Locality, (locality) => locality.shipment_origin)
   @JoinColumn({ name: 'locality_origin' })
   locality_origin: Locality;
 
-  /**
-   * Localidad de destino del envío.
-   * @example San Martín
-   */
+  @ApiProperty({
+    example: { id: 4 },
+    description: 'Numeric ID of the destination location',
+  })
   @ManyToOne(() => Locality, (locality) => locality.shipment_destination)
   @JoinColumn({ name: 'locality_destination' })
   locality_destination: Locality;

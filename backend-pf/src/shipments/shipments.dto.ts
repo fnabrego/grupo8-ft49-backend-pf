@@ -1,3 +1,4 @@
+import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 import {
   IsEmpty,
   IsNotEmpty,
@@ -9,17 +10,15 @@ import {
 import { Locality } from 'src/localities/localities.entity';
 
 export class ShipmentDto {
-  /**
-   * Localidad de origen del envío.
-   * @example Rivadavia
-   */
+  @ApiProperty({
+    example: { id: 1 },
+  })
   @IsNotEmpty()
   locality_origin: Partial<Locality>;
 
-  /**
-   * Localidad de destino del envío.
-   * @example San Martín
-   */
+  @ApiProperty({
+    example: { id: 4 },
+  })
   @IsNotEmpty()
   locality_destination: Partial<Locality>;
 
@@ -43,6 +42,7 @@ export class ShipmentDto {
   @MaxLength(80)
   address_destination: string;
 
+  @ApiHideProperty()
   @IsEmpty()
   @IsNumber()
   shipment_price: number;
