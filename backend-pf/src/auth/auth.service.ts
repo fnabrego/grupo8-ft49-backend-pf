@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { UsersRepository } from 'src/users/users.repository';
 import { User } from 'src/users/users.entity';
 import * as bcrypt from 'bcrypt';
@@ -31,11 +35,11 @@ export class AuthService {
 
     const user = await this.userRepository.getUserByEmail(email);
 
-    if (!user) return 'Invalid credential';
+    if (!user) throw new UnauthorizedException('Invalid credential');
 
     const validPassword = await bcrypt.compare(password, user.password);
 
-    if (!validPassword) throw new BadRequestException('Invalid credential');
+    if (!validPassword) throw new UnauthorizedException('Invalid credential');
 
     // Firma del token
     const payload = {

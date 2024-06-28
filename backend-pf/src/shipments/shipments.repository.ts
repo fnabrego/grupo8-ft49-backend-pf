@@ -79,5 +79,6 @@ export class ShipmentsRepository {
         await this.shippingPriceRepository.save(shippingPrice);
       }
     }
+    return 'Prices preload successfully';
   }
 }
