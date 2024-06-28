@@ -21,7 +21,7 @@ export class Order {
 
     @ManyToOne(() => User, (user) => user.orders)
     @JoinColumn({ name: 'user_id' })
-    user: User;
+    user: Partial<User>;
 
     @OneToOne(() => Shipment, (shipment) => shipment.orders)
     shipments: Shipment;
@@ -31,7 +31,7 @@ export class Order {
     packages: Package[];
 
     @OneToOne(() => Receipt, (receipt) => receipt.orders)
-    receipt: Receipt;
+    receipt?: Receipt;
 
     @Column()
     date: Date;

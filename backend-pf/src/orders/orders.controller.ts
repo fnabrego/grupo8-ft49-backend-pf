@@ -17,6 +17,9 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/roles/roles.enum';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { CreateUserDto } from '../users/users.dto';
+import { PackageDto } from '../packages/packages.dto';
+import { ShipmentDto } from '../shipments/shipments.dto';
 
 @ApiBearerAuth()
 @ApiTags('Orders')
@@ -43,14 +46,18 @@ export class OrdersController {
   }
 
   @UseGuards(AuthGuard)
-  @Post()
-  addOrder(@Body() order: CreateOrderDto) {
-    return this.ordersService.addOrder(order);
+  @Post('/new/:id')
+  addOrder(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() order: CreateOrderDto
+  ) {
+    const { packages, shipment } = order;
+    return this.ordersService.addOrder(id, packages, shipment);
   }
 
   @Roles(Role.Admin, Role.Transporte)
   @UseGuards(AuthGuard, RolesGuard)
-  @Put()
+  @Put('/update/:id')
   updateOrder(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() order: Partial<Order>,
