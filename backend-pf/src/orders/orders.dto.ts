@@ -1,27 +1,48 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsUUID } from 'class-validator';
+import { IsIn, IsNotEmpty, IsString } from 'class-validator';
 import { PackageDto } from '../packages/packages.dto';
 import { ShipmentDto } from '../shipments/shipments.dto';
+import { statusOrder } from './statusOrder.enum';
 
 export class CreateOrderDto {
 
-    // @ApiProperty({
-    //     description: 'Debe ser un string de máximo 50 caracteres, correspondiente al uuid de un usuario existente',
-    //     example: [
-    //         { id: 'dbec309b-7caa-40ee-950f-65d0a9d8dee8' },
-    //         { id: '5b296c32-181b-4c62-bcdf-c8490529ab87' }
-    //     ]
-    // })
-    // @IsNotEmpty()
-    // @IsUUID()
-    // userId: string;
-
-
+    @ApiProperty({
+        description: 'Recibe el tamaño de paquete',
+        example: { "size": "medium" },
+    })
     @IsNotEmpty()
     packages: PackageDto;
-    
-    
+
+    @ApiProperty({
+        description: 'Recibe los datos de envío',
+        example: {
+            "locality_origin": {
+                "id": 1
+            },
+            "locality_destination": {
+                "id": 4
+            },
+            "address_origin": "string",
+            "address_destination": "string",
+        }
+    })
     @IsNotEmpty()
     shipment: ShipmentDto;
 
+}
+export class UpdateOrdertDto {
+
+    @ApiProperty({
+        description: 'Se reciebe un estado de envío: receipted|acepted|sending|delivered|cancelled',
+        example: 'acepted',
+    })
+    @IsString()
+    @IsIn([
+        statusOrder.RECEIPTED,
+        statusOrder.ACEPTED,
+        statusOrder.SENDING,
+        statusOrder.DELIVERED,
+        statusOrder.CANCELLED
+    ])
+    status: statusOrder;
 }
