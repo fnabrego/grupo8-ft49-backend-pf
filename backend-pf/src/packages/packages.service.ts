@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PackagesRepository } from './packages.repository';
 import { PackageDto } from './packages.dto';
+import { PackagePricesDto } from './prices.dto';
 
 @Injectable()
 export class PackagesService {
@@ -14,6 +15,14 @@ export class PackagesService {
 
     getPackage(id:string) {
         return this.packagesRepository.getPackage(id);
+    }
+
+    preloadPrices(){
+        return this.packagesRepository.preloadPrices();
+    }
+
+    updatePrice(updatePackage: Partial<PackagePricesDto>){
+        return this.packagesRepository.updatePrice(updatePackage);
     }
 
     addPackage(addpackage:PackageDto){
