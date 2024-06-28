@@ -61,7 +61,7 @@ export class User {
   @Column({
     type: 'varchar',
     length: 50,
-    nullable: false
+    nullable:true
   })
   companyName: string;
 
@@ -82,6 +82,7 @@ export class User {
    */
   @Column({
     type: 'varchar',
+    nullable: true
   })
   dni: string;
 
@@ -91,6 +92,7 @@ export class User {
    */
   @Column({
     type: 'varchar',
+    nullable: true
   })
   cuit_cuil: string;
 

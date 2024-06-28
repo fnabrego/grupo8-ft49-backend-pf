@@ -16,6 +16,7 @@ import { MatchPassword } from '../decorators/matchPassword.decorator';
 
 
 export class CreateUserDto {
+  @ApiHideProperty()
   id: string;
 
   @ApiProperty({
@@ -26,7 +27,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   @MaxLength(50)
   email: string;
-  
+
   @ApiProperty({
     description: 'Nombre del usuario a registrarse',
     example: 'Pedro'
@@ -35,7 +36,7 @@ export class CreateUserDto {
   @IsString()
   @MaxLength(30)
   name: string;
-  
+
   @ApiProperty({
     description: 'Apellido del usuario a registrarse',
     example: 'Gomez'
@@ -44,11 +45,12 @@ export class CreateUserDto {
   @IsString()
   @MaxLength(30)
   lastName: string;
-  
+
   @ApiProperty({
     description: 'Nombre de la empresa a la que representa el usuario',
     example: 'Gucci'
   })
+  @IsOptional()
   @IsString()
   @MaxLength(50)
   companyName: string;
@@ -78,6 +80,7 @@ export class CreateUserDto {
     description: 'DNI',
     example: '34567876'
   })
+  @IsOptional()
   @IsString()
   dni: string;
 
@@ -85,6 +88,7 @@ export class CreateUserDto {
     description: 'CUIT/CUIL para responsables inscriptos',
     example: '23764539873'
   })
+  @IsOptional()
   @IsString()
   cuit_cuil: string;
 
