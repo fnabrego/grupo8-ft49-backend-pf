@@ -7,15 +7,20 @@ import { Shipment } from '../shipments/shipments.entity';
 import { Package } from '../packages/packages.entity';
 import { Receipt } from "../receipts/receipts.entity";
 import { CreateOrderDto } from "./orders.dto";
+import { CreateUserDto } from "../users/users.dto";
+import { PackageDto } from "../packages/packages.dto";
+import { ShipmentDto } from "../shipments/shipments.dto";
+import { PackagesRepository } from "../packages/packages.repository";
+import { ShipmentsRepository } from "../shipments/shipments.repository";
+import { receiptsRepository } from "../receipts/receipts.repository";
 
 @Injectable()
 export class OrdersRepository {
     constructor(
         @InjectRepository(Order) private ordersRepo: Repository<Order>,
         @InjectRepository(User) private usersRepo: Repository<User>,
-        @InjectRepository(Shipment) private shipmentRepo: Repository<Shipment>,
-        @InjectRepository(Package) private packagesRepo: Repository<Package>,
-        @InjectRepository(Receipt) private receiptsRepo: Repository<Receipt>,
+        private readonly packagesRepository: PackagesRepository,
+        private readonly shipmentsRepository: ShipmentsRepository
     ) { }
 
     async getOrder(id: string) {
@@ -31,8 +36,29 @@ export class OrdersRepository {
         return 'todas las ordenes';
     }
 
-    async addOrder(order: CreateOrderDto) {
-        return 'nueva orden';
+    async addOrder(id: string, packages: PackageDto, shipment: ShipmentDto): Promise<Order> {
+
+        const user = await this.usersRepo.findOneBy({ id });
+        const { password, ...userNoPassword } = user;
+        if (!user) throw new NotFoundException('User invalid');
+
+        const newPackage = await this.packagesRepository.addPackage(packages);
+
+        const newShipment = await this.shipmentsRepository.postShipments(shipment);
+
+        const finalPrice = newPackage.package_price + newShipment.shipment_price;
+
+        const newOrder = new Order;
+        newOrder.user = userNoPassword;
+        newOrder.packages = [newPackage];
+        newOrder.final_price = finalPrice;
+        // const date = new Date(); //!Verificar formato de fecha
+        // const currentDate = date.toISOString().split('T')[0];
+        newOrder.date = new Date();
+        newOrder.status = 'Solicitado';
+        newOrder.shipments = newShipment;
+        return await this.ordersRepo.save(newOrder);
+
     }
 
     async updateOrder(id: string, order: Partial<Order>) {
