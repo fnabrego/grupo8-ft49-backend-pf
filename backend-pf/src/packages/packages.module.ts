@@ -4,9 +4,10 @@ import { PackagesService } from './packages.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Package } from './packages.entity';
 import { PackagesRepository } from './packages.repository';
+import { PackagePrices } from './prices.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Package])],
+  imports: [TypeOrmModule.forFeature([Package, PackagePrices])],
   controllers: [PackagesController],
   providers: [PackagesService, PackagesRepository]
 })

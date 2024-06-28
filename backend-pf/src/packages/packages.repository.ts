@@ -73,35 +73,33 @@ export class PackagesRepository {
     }
 
     //funcion ficticia para calcular el precio, debe ser actualizada con la logica real cuando sepamos bien como calcula el cliente el precio de cada paquete
-    private calculatePrice(addpackage: Partial<Package>){
-        let price = 0;
-
-        switch(addpackage.size) {
+    async calculatePrice(size: PackageSize, packagePrices: PackagePrices): Promise<number>{
+        switch(size) {
             case PackageSize.ENVELOP:
-                price = 5;
-                break;
+                return packagePrices.ENVELOP
             case PackageSize.SMALL:
-                price = 10;
-                break;         
+                return packagePrices.SMALL        
             case PackageSize.MEDIUM:
-                price = 20;
-                break;
+                return packagePrices.MEDIUM
             case PackageSize.LARGE:
-                price = 30;
-                break;
+                return packagePrices.LARGE
             default:
                 throw new BadRequestException('package size is not small, medium or large')
         }
-        
-        return price;
     }
 
-    async addPackage(addpackage: Partial<Package>): Promise<Package>{
-        const calculatedPrice = await this.calculatePrice(addpackage);
+    async addPackage(addpackage: Partial<Package>){
+        const size: PackageSize = addpackage.size;
 
+        let packagePrices: PackagePrices = await this.packagePricesRepository.findOne({where: {}})
+        if(!packagePrices){
+            packagePrices = new PackagePrices()
+        }
+
+        const calculatedPrice = await this.calculatePrice(size, packagePrices)
         addpackage.package_price = calculatedPrice;
 
-        const newPackage = await this.packagesRepository.save(addpackage)
+        const newPackage = await this.packagesRepository.save(addpackage);
         return newPackage;
     }
 
