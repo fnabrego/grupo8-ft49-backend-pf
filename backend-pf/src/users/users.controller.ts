@@ -18,6 +18,7 @@ import { RoleDto } from 'src/roles/roles.dto';
 import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { changePassword } from './changePassword.dto';
 
 @ApiBearerAuth()
 @ApiTags('Users')
@@ -49,6 +50,15 @@ export class UsersController {
     @Body() user: CreateUserDto,
   ) {
     return this.userService.updateUser(id, user);
+  }
+
+  @Put('changepassword/:id')
+  @UseGuards(AuthGuard)
+  updatePasswordUser(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() data: changePassword,
+  ) {
+    return this.userService.updatePasswordUser(id, data);
   }
 
   @Put('role/:id')

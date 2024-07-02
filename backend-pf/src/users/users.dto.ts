@@ -12,7 +12,7 @@ import {
   Validate,
 } from 'class-validator';
 import { Role } from 'src/roles/roles.enum';
-import { MatchPassword } from '../decorators/matchPassword.decorator';
+import { MatchPassword } from 'src/decorators/matchPassword.decorator';
 
 export class CreateUserDto {
   @ApiHideProperty()
