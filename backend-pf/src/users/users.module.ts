@@ -4,7 +4,6 @@ import { UsersController } from './users.controller';
 import { UsersRepository } from './users.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users.entity';
-
 import { Order } from '../orders/orders.entity';
 import { Receipt } from '../receipts/receipts.entity';
 

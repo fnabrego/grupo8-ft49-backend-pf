@@ -111,6 +111,11 @@ export class CreateUserDto {
   locality: string;
 
   @ApiHideProperty()
+  @IsString()
+  @IsOptional()
+  profilePicture: string;
+
+  @ApiHideProperty()
   @IsEmpty()
   @IsEnum(Role)
   role: Role;

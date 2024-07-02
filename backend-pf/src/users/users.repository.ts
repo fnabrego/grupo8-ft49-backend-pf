@@ -4,8 +4,10 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as bcrypt from 'bcrypt';
 import { User } from './users.entity';
 import { Repository } from 'typeorm';
+import { CreateUserDto } from './users.dto';
 
 @Injectable()
 export class UsersRepository {

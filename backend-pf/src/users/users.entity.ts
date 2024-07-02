@@ -39,7 +39,7 @@ export class User {
   @Column({
     type: 'varchar',
     length: 30,
-    nullable: false
+    nullable: false,
   })
   name: string;
 
@@ -50,7 +50,7 @@ export class User {
   @Column({
     type: 'varchar',
     length: 30,
-    nullable: false
+    nullable: false,
   })
   lastName: string;
 
@@ -61,7 +61,7 @@ export class User {
   @Column({
     type: 'varchar',
     length: 50,
-    nullable:true
+    nullable: true,
   })
   companyName: string;
 
@@ -82,7 +82,7 @@ export class User {
    */
   @Column({
     type: 'varchar',
-    nullable: true
+    nullable: true,
   })
   dni: string;
 
@@ -92,7 +92,7 @@ export class User {
    */
   @Column({
     type: 'varchar',
-    nullable: true
+    nullable: true,
   })
   cuit_cuil: string;
 
@@ -114,6 +114,13 @@ export class User {
     default: Role.User,
   })
   role: Role;
+
+  @Column({
+    type: 'varchar',
+    length: 300,
+    nullable: true,
+  })
+  profilePicture: string;
 
   @OneToMany(() => Order, (order) => order.user)
   @JoinColumn()
