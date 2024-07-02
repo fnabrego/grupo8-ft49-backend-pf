@@ -14,6 +14,10 @@ export class OrdersService {
     return this.ordersRepository.getOrders(page, limit);
   }
 
+  priceOrder(packages: PackageDto, shipment: ShipmentDto) {
+    return this.ordersRepository.priceOrder(packages, shipment);
+  }
+
   addOrder(id: string, packages: PackageDto, shipment: ShipmentDto) {
     return this.ordersRepository.addOrder(id, packages, shipment);
   }

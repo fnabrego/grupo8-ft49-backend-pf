@@ -33,16 +33,25 @@ export class CreateOrderDto {
 export class UpdateOrdertDto {
 
     @ApiProperty({
-        description: 'Se reciebe un estado de envío: receipted|acepted|sending|delivered|cancelled',
-        example: 'acepted',
+        description: 'Se reciebe un estado de envío: PENDING | AWAITING_PAYMENT | AWAITING_FULFILLMENT | AWAITING_SHIPMENT | AWAITING_PICKUP | PARTIALLY_SHIPPED | COMPLETED | SHIPPED | CANCELLED | DECLINED | REFUNDED | DISPUTED | MANUAL_VERIFICATION | PARTIALLY_REFUNDED',
+        example: 'aceptado',
     })
     @IsString()
     @IsIn([
-        statusOrder.RECEIPTED,
-        statusOrder.ACEPTED,
-        statusOrder.SENDING,
-        statusOrder.DELIVERED,
-        statusOrder.CANCELLED
+        statusOrder.AWAITING_FULFILLMENT,
+        statusOrder.AWAITING_PAYMENT,
+        statusOrder.AWAITING_PICKUP,
+        statusOrder.AWAITING_SHIPMENT,
+        statusOrder.CANCELLED,
+        statusOrder.COMPLETED,
+        statusOrder.DECLINED,
+        statusOrder.DISPUTED,
+        statusOrder.MANUAL_VERIFICATION,
+        statusOrder.PARTIALLY_REFUNDED,
+        statusOrder.PARTIALLY_SHIPPED,
+        statusOrder.PENDING,
+        statusOrder.REFUNDED,
+        statusOrder.SHIPPED
     ])
     status: statusOrder;
 }

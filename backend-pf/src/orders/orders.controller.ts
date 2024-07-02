@@ -45,6 +45,15 @@ export class OrdersController {
     return this.ordersService.getOrders(page, limit);
   }
 
+  @HttpCode(200)
+  @Post('price')
+  priceOrder(
+    @Body() order: CreateOrderDto
+  ) {
+    const { packages, shipment } = order;
+    return this.ordersService.priceOrder(packages, shipment);
+  }
+
   @HttpCode(201)
   @UseGuards(AuthGuard)
   @Post('/new/:id')

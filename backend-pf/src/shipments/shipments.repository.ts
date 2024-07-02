@@ -20,7 +20,7 @@ export class ShipmentsRepository {
     private shippingPriceRepository: Repository<ShippingPrice>,
     @InjectRepository(Locality)
     private localityRepository: Repository<Locality>,
-  ) {}
+  ) { }
   async getShipments(page: number, limit: number): Promise<Shipment[]> {
     if (page < 1 || limit < 1) {
       throw new BadRequestException('Page and limit must be greater than 0.');
@@ -34,17 +34,26 @@ export class ShipmentsRepository {
 
     return shipments;
   }
+  async priceShipment(shipmentPrice: ShipmentDto) {
+    const { locality_origin, locality_destination } = shipmentPrice;
+    const calculatedShipment = await this.shippingPriceRepository.findOne({
+      where: {
+        origin: locality_origin,
+        destination: locality_destination,
+      },
+    });
+    shipmentPrice.shipment_price = calculatedShipment.price;
+    return shipmentPrice;
+
+  }
   async postShipments(data: ShipmentDto): Promise<Shipment> {
     const { locality_origin, locality_destination } = data;
-    // console.log(locality_origin);
-    console.log(locality_destination);
     const shippingprice = await this.shippingPriceRepository.findOne({
       where: {
         origin: locality_origin,
         destination: locality_destination,
       },
     });
-    console.log(shippingprice);
     data.shipment_price = shippingprice.price;
     return await this.shipmentRepository.save(data);
   }
