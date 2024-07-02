@@ -12,6 +12,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import typeorm from './config/typeorm';
 // import { ReceiptsModule } from './receipts/receipts.module';
 import { AuthModule } from './auth/auth.module';
+import { FileUploadModule } from './file-upload/file-upload.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { AuthModule } from './auth/auth.module';
     ShipmentsModule,
     LocalitiesModule,
     OrdersModule,
+    FileUploadModule,
     // ReceiptsModule,
 
     JwtModule.register({
