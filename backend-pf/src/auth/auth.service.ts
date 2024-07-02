@@ -7,6 +7,7 @@ import { UsersRepository } from 'src/users/users.repository';
 import { User } from 'src/users/users.entity';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { CreateUserDto } from 'src/users/users.dto';
 
 @Injectable()
 export class AuthService {
@@ -15,12 +16,18 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async signUp(user: Partial<User>) {
-    const { email, password } = user;
+  async signUp(user: CreateUserDto): Promise<Partial<User>> {
+    const { email, password, dni, cuit_cuil, name, companyName } = user;
 
     const foundedUser = await this.userRepository.getUserByEmail(email);
 
     if (foundedUser) throw new BadRequestException('Registered Email');
+
+    if (companyName !== '' && cuit_cuil === '')
+      throw new BadRequestException("Please enter your company's CUIT");
+
+    if (companyName === '' && name !== '' && dni === '')
+      throw new BadRequestException('Please enter your DNI number');
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
