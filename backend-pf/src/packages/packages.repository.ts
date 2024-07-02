@@ -19,7 +19,7 @@ export class PackagesRepository {
     private packagesRepository: Repository<Package>,
     @InjectRepository(PackagePrices)
     private packagePricesRepository: Repository<PackagePrices>,
-  ) {}
+  ) { }
 
   async preloadPrices() {
     data?.map(async (element) => {
@@ -97,6 +97,20 @@ export class PackagesRepository {
           'package size is not small, medium or large',
         );
     }
+  }
+
+  async pricePackage(packagePrice: Partial<Package>) {
+    const size: PackageSize = packagePrice.size;
+
+    let packagePrices: PackagePrices =
+      await this.packagePricesRepository.findOne({ where: {} });
+    if (!packagePrices) {
+      packagePrices = new PackagePrices();
+    }
+
+    const calculatedPrice = await this.calculatePrice(size, packagePrices);
+    packagePrice.package_price = calculatedPrice;
+    return packagePrice;
   }
 
   async addPackage(addpackage: Partial<Package>) {

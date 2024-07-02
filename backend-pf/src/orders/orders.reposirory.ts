@@ -61,11 +61,23 @@ export class OrdersRepository {
         return orders;
     }
 
+    async priceOrder(packages: PackageDto, shipment: ShipmentDto) {
+        const packagePrice = await this.packagesRepository.pricePackage(packages);
+        if (!packagePrice) throw new InternalServerErrorException('Calculate price package failled')
+
+        const shipmentPrice = await this.shipmentsRepository.priceShipment(shipment);
+        if (!shipmentPrice) throw new InternalServerErrorException('Add Shipment failled');
+
+        const finalPrice = packagePrice.package_price + shipmentPrice.shipment_price;
+        
+        return finalPrice;
+    }
+
     async addOrder(id: string, packages: PackageDto, shipment: ShipmentDto): Promise<Order> {
 
         const user = await this.usersRepo.findOneBy({ id });
-        const { password, ...userNoPassword } = user;
         if (!user) throw new NotFoundException('User invalid');
+        const { password, ...userNoPassword } = user;
 
         const newPackage = await this.packagesRepository.addPackage(packages);
         if (!newPackage) throw new InternalServerErrorException('Add Package failled')
@@ -83,7 +95,7 @@ export class OrdersRepository {
         newOrder.packages = [newPackage];
         newOrder.final_price = finalPrice;
         newOrder.date = new Date();
-        newOrder.status = statusOrder.RECEIPTED;
+        newOrder.status = statusOrder.PENDING;
         newOrder.shipments = newShipment;
 
         const confirmOrder = await this.ordersRepo.save(newOrder);
