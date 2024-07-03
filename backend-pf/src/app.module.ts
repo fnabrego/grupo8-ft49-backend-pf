@@ -14,6 +14,7 @@ import typeorm from './config/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { FirebaseModule } from './firebase/firebase.module';
 import { FileUploadModule } from './file-upload/file-upload.module';
+import { EmailModule } from './mails/emails.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { FileUploadModule } from './file-upload/file-upload.module';
     PackagesModule,
     OrdersModule,
     FileUploadModule,
+    EmailModule,
     // ReceiptsModule,
 
     JwtModule.register({
