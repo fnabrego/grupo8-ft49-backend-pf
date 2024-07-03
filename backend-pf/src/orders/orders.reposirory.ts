@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -70,15 +71,12 @@ export class OrdersRepository {
     return orders;
   }
 
-  async priceOrder(packages: PackageDto, shipment: ShipmentDto) {
+  async quoteOrder(packages: PackageDto, shipment: Partial<ShipmentDto>) {
     const packagePrice = await this.packagesRepository.pricePackage(packages);
-    if (!packagePrice)
-      throw new InternalServerErrorException('Calculate price package failled');
+    if (!packagePrice) throw new BadRequestException('Invalid package size');
 
     const shipmentPrice =
       await this.shipmentsRepository.priceShipment(shipment);
-    if (!shipmentPrice)
-      throw new InternalServerErrorException('Add Shipment failled');
 
     const finalPrice =
       packagePrice.package_price + shipmentPrice.shipment_price;

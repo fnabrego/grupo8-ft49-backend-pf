@@ -2,7 +2,6 @@ import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 import {
   IsEmpty,
   IsNotEmpty,
-  IsNumber,
   IsString,
   MaxLength,
   MinLength,
@@ -44,6 +43,5 @@ export class ShipmentDto {
 
   @ApiHideProperty()
   @IsEmpty()
-  @IsNumber()
   shipment_price: number;
 }

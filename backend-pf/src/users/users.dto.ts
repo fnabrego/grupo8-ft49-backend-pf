@@ -78,7 +78,7 @@ export class CreateUserDto {
 
   @ApiProperty({
     description: 'DNI',
-    example: '',
+    example: '12345678',
   })
   @IsOptional()
   @IsString()

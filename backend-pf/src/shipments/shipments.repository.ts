@@ -34,7 +34,7 @@ export class ShipmentsRepository {
 
     return shipments;
   }
-  async priceShipment(shipmentPrice: ShipmentDto) {
+  async priceShipment(shipmentPrice: Partial<ShipmentDto>) {
     const { locality_origin, locality_destination } = shipmentPrice;
     const calculatedShipment = await this.shippingPriceRepository.findOne({
       where: {
@@ -53,6 +53,7 @@ export class ShipmentsRepository {
         destination: locality_destination,
       },
     });
+    console.log(shippingprice.price);
     data.shipment_price = shippingprice.price;
     return await this.shipmentRepository.save(data);
   }
@@ -82,9 +83,13 @@ export class ShipmentsRepository {
         const localityOrigin = await this.localityRepository.findOneBy({
           name: origin,
         });
+        if (!localityOrigin)
+          throw new NotFoundException(`Cannot find ${localityOrigin}`);
         const localityDestination = await this.localityRepository.findOneBy({
           name: destination,
         });
+        if (!localityDestination)
+          throw new NotFoundException(`Cannot find ${localityDestination}`);
         const shippingPrice = new ShippingPrice();
         shippingPrice.origin = localityOrigin;
         shippingPrice.destination = localityDestination;
