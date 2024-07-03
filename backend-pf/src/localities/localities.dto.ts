@@ -3,7 +3,7 @@ import { IsNotEmpty, MaxLength, MinLength } from 'class-validator';
 export class LocalityDto {
   /**
    * Nombre de la localidad.
-   * @example Rivadavia
+   * @example 'La Libertad'
    */
   @IsNotEmpty()
   @MinLength(3)
