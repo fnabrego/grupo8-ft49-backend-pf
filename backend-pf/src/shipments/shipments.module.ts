@@ -15,6 +15,6 @@ import { Locality } from 'src/localities/localities.entity';
 export class ShipmentsModule implements OnModuleInit {
   constructor(private readonly shipmentsService: ShipmentsService) {}
   async onModuleInit() {
-    await this.shipmentsService.preloadShipmentPrices();
+    await setTimeout(() => this.shipmentsService.preloadShipmentPrices(), 1000);
   }
 }

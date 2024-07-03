@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { OrdersService } from './orders.service';
-import { CreateOrderDto, UpdateOrdertDto } from './orders.dto';
+import { CreateOrderDto, QuoteOrderDto, UpdateOrdertDto } from './orders.dto';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/roles/roles.enum';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
@@ -45,10 +45,10 @@ export class OrdersController {
   }
 
   @HttpCode(200)
-  @Post('price')
-  priceOrder(@Body() order: CreateOrderDto) {
+  @Post('quoter')
+  quoteOrder(@Body() order: QuoteOrderDto) {
     const { packages, shipment } = order;
-    return this.ordersService.priceOrder(packages, shipment);
+    return this.ordersService.quoteOrder(packages, shipment);
   }
 
   @HttpCode(201)

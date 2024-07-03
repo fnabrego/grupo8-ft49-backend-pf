@@ -21,8 +21,8 @@ export class CreateOrderDto {
       locality_destination: {
         id: 4,
       },
-      address_origin: 'string',
-      address_destination: 'string',
+      address_origin: 'Av. Principal 123',
+      address_destination: 'Av. Secundaria 123',
     },
   })
   @IsNotEmpty()
@@ -52,4 +52,27 @@ export class UpdateOrdertDto {
     statusOrder.SHIPPED,
   ])
   status: statusOrder;
+}
+
+export class QuoteOrderDto {
+  @ApiProperty({
+    description: 'Recibe el tamaño de paquete',
+    example: { size: 'medium' },
+  })
+  @IsNotEmpty()
+  packages: PackageDto;
+
+  @ApiProperty({
+    description: 'Recibe los datos de envío',
+    example: {
+      locality_origin: {
+        id: 1,
+      },
+      locality_destination: {
+        id: 4,
+      },
+    },
+  })
+  @IsNotEmpty()
+  shipment: ShipmentDto;
 }

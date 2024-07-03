@@ -6,7 +6,7 @@ import { ShipmentDto } from '../shipments/shipments.dto';
 
 @Injectable()
 export class OrdersService {
-  constructor(private readonly ordersRepository: OrdersRepository) { }
+  constructor(private readonly ordersRepository: OrdersRepository) {}
   getOrder(id: string) {
     return this.ordersRepository.getOrder(id);
   }
@@ -14,8 +14,8 @@ export class OrdersService {
     return this.ordersRepository.getOrders(page, limit);
   }
 
-  priceOrder(packages: PackageDto, shipment: ShipmentDto) {
-    return this.ordersRepository.priceOrder(packages, shipment);
+  quoteOrder(packages: PackageDto, shipment: Partial<ShipmentDto>) {
+    return this.ordersRepository.quoteOrder(packages, shipment);
   }
 
   addOrder(id: string, packages: PackageDto, shipment: ShipmentDto) {

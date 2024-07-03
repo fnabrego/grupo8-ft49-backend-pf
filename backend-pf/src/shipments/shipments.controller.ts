@@ -14,6 +14,7 @@ import { ShipmentsService } from './shipments.service';
 import { ShipmentDto } from './shipments.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { Shipment } from './shipments.entity';
 
 @ApiTags('Shipments')
 @Controller('shipments')
@@ -31,10 +32,11 @@ export class ShipmentsController {
     );
   }
 
-  // @ApiBearerAuth()
-  // @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
   @Post('add')
-  async postShipments(@Body() data: ShipmentDto) {
+  async postShipments(@Body() data: ShipmentDto): Promise<Shipment> {
+    console.log(data);
     return await this.shipmentsService.postShipments(data);
   }
 
