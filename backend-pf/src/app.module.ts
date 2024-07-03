@@ -12,6 +12,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import typeorm from './config/typeorm';
 // import { ReceiptsModule } from './receipts/receipts.module';
 import { AuthModule } from './auth/auth.module';
+import { FirebaseModule } from './firebase/firebase.module';
 import { FileUploadModule } from './file-upload/file-upload.module';
 
 @Module({
@@ -40,6 +41,7 @@ import { FileUploadModule } from './file-upload/file-upload.module';
         expiresIn: '1h',
       },
     }),
+    FirebaseModule,
   ],
   controllers: [AppController],
   providers: [AppService],
