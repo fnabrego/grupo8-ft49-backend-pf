@@ -19,7 +19,7 @@ export class PackagesRepository {
     private packagesRepository: Repository<Package>,
     @InjectRepository(PackagePrices)
     private packagePricesRepository: Repository<PackagePrices>,
-  ) { }
+  ) {}
 
   async preloadPrices() {
     data?.map(async (element) => {
@@ -61,7 +61,7 @@ export class PackagesRepository {
     }
 
     const skip = (page - 1) * limit;
-    let packages = await this.packagesRepository.find({
+    const packages = await this.packagesRepository.find({
       take: limit,
       skip: skip,
     });

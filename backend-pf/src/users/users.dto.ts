@@ -1,8 +1,8 @@
 import { ApiHideProperty, ApiProperty, PickType } from '@nestjs/swagger';
 import {
   IsEmail,
-  IsEmpty,
-  IsEnum,
+  // IsEmpty,
+  // IsEnum,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -11,8 +11,8 @@ import {
   MinLength,
   Validate,
 } from 'class-validator';
-import { Role } from 'src/roles/roles.enum';
-import { MatchPassword } from '../decorators/matchPassword.decorator';
+// import { Role } from 'src/roles/roles.enum';
+import { MatchPassword } from 'src/decorators/matchPassword.decorator';
 
 export class CreateUserDto {
   @ApiHideProperty()
@@ -111,9 +111,14 @@ export class CreateUserDto {
   locality: string;
 
   @ApiHideProperty()
-  @IsEmpty()
-  @IsEnum(Role)
-  role: Role;
+  @IsString()
+  @IsOptional()
+  profilePicture: string;
+
+  // @ApiHideProperty()
+  // @IsEmpty()
+  // @IsEnum(Role)
+  // role: Role;
 }
 
 export class LoginUserDto extends PickType(CreateUserDto, [
