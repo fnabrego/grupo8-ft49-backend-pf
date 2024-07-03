@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, OnModuleInit } from '@nestjs/common';
 import { ShipmentsService } from './shipments.service';
 import { ShipmentsController } from './shipments.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -12,4 +12,9 @@ import { Locality } from 'src/localities/localities.entity';
   providers: [ShipmentsService, ShipmentsRepository],
   controllers: [ShipmentsController],
 })
-export class ShipmentsModule {}
+export class ShipmentsModule implements OnModuleInit {
+  constructor(private readonly shipmentsService: ShipmentsService) {}
+  async onModuleInit() {
+    await this.shipmentsService.preloadShipmentPrices();
+  }
+}

@@ -71,6 +71,11 @@ export class ShipmentsRepository {
     return shipment;
   }
   async preloadShipmentPrices() {
+    const loadedLocalities = await this.localityRepository.find();
+    if (!loadedLocalities.length)
+      throw new BadRequestException('You have to preload all localities first');
+    const alreadyLoaded = await this.shippingPriceRepository.find();
+    if (alreadyLoaded.length) return null;
     for (const origin in prices) {
       for (const destination in prices[origin]) {
         const price = prices[origin][destination];
@@ -87,6 +92,7 @@ export class ShipmentsRepository {
         await this.shippingPriceRepository.save(shippingPrice);
       }
     }
-    return 'Prices preload successfully';
+    console.log('Shipment prices added successfully');
+    return 'Shipment prices added successfully';
   }
 }
