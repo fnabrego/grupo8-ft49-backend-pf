@@ -19,12 +19,11 @@ import { Role } from 'src/roles/roles.enum';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 
-
 @ApiBearerAuth()
 @ApiTags('Orders')
 @Controller('orders')
 export class OrdersController {
-  constructor(private readonly ordersService: OrdersService) { }
+  constructor(private readonly ordersService: OrdersService) {}
 
   @HttpCode(200)
   @UseGuards(AuthGuard)
@@ -41,15 +40,13 @@ export class OrdersController {
   @ApiQuery({ name: 'limit', required: false, type: Number })
   getOrders(@Query('page') page?: number, @Query('limit') limit?: number) {
     if (!page || !limit) return this.ordersService.getOrders();
-    
+
     return this.ordersService.getOrders(page, limit);
   }
 
   @HttpCode(200)
   @Post('price')
-  priceOrder(
-    @Body() order: CreateOrderDto
-  ) {
+  priceOrder(@Body() order: CreateOrderDto) {
     const { packages, shipment } = order;
     return this.ordersService.priceOrder(packages, shipment);
   }
@@ -59,7 +56,7 @@ export class OrdersController {
   @Post('/new/:id')
   addOrder(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() order: CreateOrderDto
+    @Body() order: CreateOrderDto,
   ) {
     const { packages, shipment } = order;
     return this.ordersService.addOrder(id, packages, shipment);
