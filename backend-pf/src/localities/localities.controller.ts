@@ -23,7 +23,7 @@ export class LocalitiesController {
   constructor(private readonly localitiesService: LocalitiesService) {}
 
   @Get()
-  async getLocalities() {
+  async getLocalities(): Promise<LocalityDto[]> {
     return await this.localitiesService.getLocalities();
   }
   @ApiBearerAuth()
@@ -49,8 +49,8 @@ export class LocalitiesController {
     return await this.localitiesService.deleteLocalities(id);
   }
 
-  @Get('seeder')
-  async preloadLocalities() {
-    return await this.localitiesService.preloadLocalities();
-  }
+  // @Get('seeder')
+  // async preloadLocalities() {
+  //   return await this.localitiesService.preloadLocalities();
+  // }
 }

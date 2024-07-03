@@ -5,7 +5,7 @@ import { LocalitiesRepository } from './localities.repository';
 @Injectable()
 export class LocalitiesService {
   constructor(private readonly localitiesRepository: LocalitiesRepository) {}
-  getLocalities() {
+  getLocalities(): Promise<LocalityDto[]> {
     return this.localitiesRepository.getLocalities();
   }
   postLocalities(data: LocalityDto) {

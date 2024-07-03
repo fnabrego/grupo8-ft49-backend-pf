@@ -26,10 +26,10 @@ export class PackagesController {
     return this.packagesService.getPackages(Number(page), Number(limit));
   }
 
-  @Get('price/seeder')
-  preloadPrices() {
-    return this.packagesService.preloadPrices();
-  }
+  // @Get('price/seeder')
+  // preloadPrices() {
+  //   return this.packagesService.preloadPrices();
+  // }
 
   @Get(':id')
   getPackage(@Param('id', ParseUUIDPipe) id: string) {

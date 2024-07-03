@@ -55,8 +55,8 @@ export class ShipmentsController {
     return await this.shipmentsService.deleteShipments(id);
   }
 
-  @Get('prices/seeder')
-  async preloadShipmentPrices() {
-    return await this.shipmentsService.preloadShipmentPrices();
-  }
+  // @Get('prices/seeder')
+  // async preloadShipmentPrices() {
+  //   return await this.shipmentsService.preloadShipmentPrices();
+  // }
 }

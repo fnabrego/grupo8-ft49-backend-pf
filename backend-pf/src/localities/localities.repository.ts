@@ -15,10 +15,10 @@ export class LocalitiesRepository {
     @InjectRepository(Locality)
     private localityRepository: Repository<Locality>,
   ) {}
-  async getLocalities(): Promise<Locality[]> {
+  async getLocalities(): Promise<LocalityDto[]> {
     return await this.localityRepository.find();
   }
-  async postLocalities(data: LocalityDto): Promise<Locality> {
+  async postLocalities(data: LocalityDto): Promise<LocalityDto> {
     const { name } = data;
     const existingLocality = await this.localityRepository.findOne({
       where: { name },
@@ -44,6 +44,8 @@ export class LocalitiesRepository {
     return locality;
   }
   async preloadLocalities() {
+    const alreadyLoaded = await this.localityRepository.find();
+    if (alreadyLoaded.length) return null;
     data?.map(async (element) => {
       await this.localityRepository
         .createQueryBuilder()
@@ -53,6 +55,7 @@ export class LocalitiesRepository {
         .orIgnore()
         .execute();
     });
+    console.log('Localities added successfully');
     return 'Localities added successfully';
   }
 }

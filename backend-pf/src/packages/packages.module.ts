@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, OnModuleInit } from '@nestjs/common';
 import { PackagesController } from './packages.controller';
 import { PackagesService } from './packages.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -9,6 +9,11 @@ import { PackagePrices } from './prices.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([Package, PackagePrices])],
   controllers: [PackagesController],
-  providers: [PackagesService, PackagesRepository]
+  providers: [PackagesService, PackagesRepository],
 })
-export class PackagesModule {}
+export class PackagesModule implements OnModuleInit {
+  constructor(private readonly packagesService: PackagesService) {}
+  async onModuleInit() {
+    await this.packagesService.preloadPrices();
+  }
+}

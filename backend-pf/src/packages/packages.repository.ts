@@ -22,6 +22,8 @@ export class PackagesRepository {
   ) {}
 
   async preloadPrices() {
+    const alreadyLoaded = await this.packagePricesRepository.find();
+    if (alreadyLoaded.length) return null;
     data?.map(async (element) => {
       await this.packagePricesRepository
         .createQueryBuilder()
@@ -36,6 +38,7 @@ export class PackagesRepository {
         .orIgnore()
         .execute();
     });
+    console.log('Package prices added successfully');
     return 'Package prices added successfully';
   }
 

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, OnModuleInit } from '@nestjs/common';
 import { LocalitiesController } from './localities.controller';
 import { LocalitiesService } from './localities.service';
 import { LocalitiesRepository } from './localities.repository';
@@ -10,4 +10,10 @@ import { Locality } from './localities.entity';
   controllers: [LocalitiesController],
   providers: [LocalitiesService, LocalitiesRepository],
 })
-export class LocalitiesModule {}
+export class LocalitiesModule implements OnModuleInit {
+  constructor(private readonly localitiesService: LocalitiesService) {}
+
+  async onModuleInit() {
+    await this.localitiesService.preloadLocalities();
+  }
+}
