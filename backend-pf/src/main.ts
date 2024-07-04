@@ -4,6 +4,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { initializeApp } from 'firebase/app';
 import { getStorage } from 'firebase/storage';
 import { ValidationPipe } from '@nestjs/common';
+import { config as dotenvConfig } from 'dotenv';
+dotenvConfig({ path: '.env.development' });
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -17,7 +19,7 @@ async function bootstrap() {
   );
 
   app.enableCors({
-    origin: 'http://localhost:4321',
+    origin: process.env.URL_FRONT,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
@@ -42,6 +44,6 @@ async function bootstrap() {
   });
 
   const storage = getStorage(firebaseApp)
-  await app.listen(3000);
+  await app.listen(process.env.PORT);
 }
 bootstrap();
