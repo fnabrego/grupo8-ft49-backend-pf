@@ -29,7 +29,7 @@ export class EmailRepository {
     try {
       const info = await this.transporter.sendMail(mailOptions);
       return info;
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(`Error al enviar el correo: ${error.message}`);
     }
   }
