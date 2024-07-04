@@ -10,6 +10,8 @@ import { User } from './users.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './users.dto';
 import { changePassword } from './changePassword.dto';
+import { admin, transportista } from 'src/utils/preloadUsers';
+import { Role } from 'src/roles/roles.enum';
 
 @Injectable()
 export class UsersRepository {
@@ -105,5 +107,21 @@ export class UsersRepository {
   }
   async getUserByEmail(email: string) {
     return await this.usersRepository.findOneBy({ email });
+  }
+  async preload() {
+    const users = await this.usersRepository.find();
+    if (!users.length) {
+      const adminUser = await this.usersRepository.create(admin);
+      adminUser.role = Role.Admin;
+      await this.usersRepository.save(adminUser);
+      console.log('Admin created successfully');
+      const transportistaUser =
+        await this.usersRepository.create(transportista);
+      transportistaUser.role = Role.Transporte;
+      await this.usersRepository.save(transportistaUser);
+      console.log('Transportista created successfully');
+    } else {
+      return null;
+    }
   }
 }

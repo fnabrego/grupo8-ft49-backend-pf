@@ -24,4 +24,7 @@ export class UsersService {
   updateRoleUser(id: string, user: any) {
     return this.usersRepository.updateRoleUser(id, user);
   }
+  preload() {
+    return this.usersRepository.preload();
+  }
 }
