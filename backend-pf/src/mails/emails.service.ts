@@ -5,7 +5,16 @@ import { EmailRepository } from './emails.repository';
 export class EmailService {
   constructor(private readonly emailRepository: EmailRepository) {}
 
-  async sendMail(to: string, subject: string, text: string, html: string) {
-    return this.emailRepository.sendMail(to, subject, text, html);
+  async sendEmailRegister(id: string) {
+    return this.emailRepository.sendEmailRegister(id);
+  }
+  async sendEmailOrder(id: string) {
+    return this.emailRepository.sendEmailOrder(id);
+  }
+  async sendEmailStatus(id: string) {
+    return this.emailRepository.sendEmailStatus(id);
+  }
+  async sendEmailUpdateUser(id: string) {
+    return this.emailRepository.sendEmailUpdateUser(id);
   }
 }
