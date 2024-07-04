@@ -17,7 +17,7 @@ export class FirebaseService {
             await uploadBytes(storageRef, file.buffer);
             console.log('Archivo subido a la nube');
             return 'Archivo subido exitosamente';
-        } catch (error) {
+        } catch (error:any) {
             throw new Error(error);
         }
     }

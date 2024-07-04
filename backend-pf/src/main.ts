@@ -34,13 +34,13 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   const firebaseApp = initializeApp({
-    apiKey: "AIzaSyACOK4mhj7ZGV1UWIvDkIMm4Jys0MpKEOI",
-    authDomain: "proyecto-final-web-ft49-grupo8.firebaseapp.com",
-    projectId: "proyecto-final-web-ft49-grupo8",
-    storageBucket: "proyecto-final-web-ft49-grupo8.appspot.com",
-    messagingSenderId: "559365938466",
-    appId: "1:559365938466:web:0724d71cc3db97e46dd97b",
-    measurementId: "G-CDJXZVWQV9"
+    apiKey: "AIzaSyB3y1gGkI-j5UNRO6N6-hZmj710eIjYmKM",
+    authDomain: "expreso-rivadavia.firebaseapp.com",
+    projectId: "expreso-rivadavia",
+    storageBucket: "expreso-rivadavia.appspot.com",
+    messagingSenderId: "249213666149",
+    appId: "1:249213666149:web:cc5193f2fd7b68ba48d78c",
+    measurementId: "G-6LPE6TVVJS"
   });
 
   const storage = getStorage(firebaseApp)
