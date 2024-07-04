@@ -110,13 +110,19 @@ export class UsersRepository {
   }
   async preload() {
     const users = await this.usersRepository.find();
+
     if (!users.length) {
       const adminUser = await this.usersRepository.create(admin);
+      const hashedPasswordA = await bcrypt.hash(adminUser.password, 10);
+      adminUser.password = hashedPasswordA;
       adminUser.role = Role.Admin;
       await this.usersRepository.save(adminUser);
       console.log('Admin created successfully');
+
       const transportistaUser =
         await this.usersRepository.create(transportista);
+      const hashedPasswordT = await bcrypt.hash(transportistaUser.password, 10);
+      transportistaUser.password = hashedPasswordT;
       transportistaUser.role = Role.Transporte;
       await this.usersRepository.save(transportistaUser);
       console.log('Transportista created successfully');
