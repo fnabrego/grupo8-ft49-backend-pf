@@ -36,7 +36,6 @@ export class ShipmentsController {
   @UseGuards(AuthGuard)
   @Post('add')
   async postShipments(@Body() data: ShipmentDto): Promise<Shipment> {
-    console.log(data);
     return await this.shipmentsService.postShipments(data);
   }
 

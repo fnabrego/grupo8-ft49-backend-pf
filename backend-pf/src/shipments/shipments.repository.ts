@@ -53,10 +53,20 @@ export class ShipmentsRepository {
         destination: locality_destination,
       },
     });
-    console.log(shippingprice.price);
-    data.shipment_price = shippingprice.price;
+    if (!shippingprice) {
+      const shippingprice2 = await this.shippingPriceRepository.findOne({
+        where: {
+          origin: locality_destination,
+          destination: locality_origin,
+        },
+      });
+      data.shipment_price = shippingprice2.price;
+    } else {
+      data.shipment_price = shippingprice.price;
+    }
     return await this.shipmentRepository.save(data);
   }
+
   async putShipments(id: string, data: ShipmentDto): Promise<Shipment> {
     const shipment = await this.shipmentRepository.findOneBy({ id });
     if (!shipment)
