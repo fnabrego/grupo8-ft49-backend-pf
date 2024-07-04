@@ -6,10 +6,13 @@ import { UsersRepository } from 'src/users/users.repository';
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
+import { PassportModule } from '@nestjs/passport';
+import { ConfigModule } from '@nestjs/config';
+import { GoogleStrategy } from './strategies/google.strategy';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User])],
+  imports: [PassportModule, ConfigModule, TypeOrmModule.forFeature([User])],
   controllers: [AuthController],
-  providers: [AuthService, UsersRepository],
+  providers: [AuthService, UsersRepository, GoogleStrategy],
 })
 export class AuthModule {}
