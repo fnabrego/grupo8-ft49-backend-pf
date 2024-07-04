@@ -42,6 +42,8 @@ export class ShipmentsRepository {
         destination: locality_destination,
       },
     });
+    console.log(calculatedShipment);
+    
     shipmentPrice.shipment_price = calculatedShipment.price;
     return shipmentPrice;
   }
