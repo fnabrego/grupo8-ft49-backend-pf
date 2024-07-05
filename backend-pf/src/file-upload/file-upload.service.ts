@@ -21,10 +21,13 @@ export class FileUploadService {
 
     const uploadedImage = await this.fileUploadRepository.uploadImage(file);
 
-    const updatedUser = await this.usersRepository.update(id, {
+    await this.usersRepository.update(id, {
       profilePicture: uploadedImage.secure_url,
     });
-    const { password, ...userNoPassword } = user;
+
+    const updatedUser = await this.usersRepository.findOneBy({ id });
+
+    const { password, ...userNoPassword } = updatedUser;
 
     return userNoPassword;
   }
