@@ -24,7 +24,8 @@ export class FileUploadService {
     const updatedUser = await this.usersRepository.update(id, {
       profilePicture: uploadedImage.secure_url,
     });
+    const { password, ...userNoPassword } = user;
 
-    return `Usuario actualizado con exito`;
+    return userNoPassword;
   }
 }
