@@ -36,20 +36,11 @@ export class UpdateOrdertDto {
   })
   @IsString()
   @IsIn([
-    statusOrder.AWAITING_FULFILLMENT,
-    statusOrder.AWAITING_PAYMENT,
-    statusOrder.AWAITING_PICKUP,
-    statusOrder.AWAITING_SHIPMENT,
-    statusOrder.CANCELLED,
-    statusOrder.COMPLETED,
-    statusOrder.DECLINED,
-    statusOrder.DISPUTED,
-    statusOrder.MANUAL_VERIFICATION,
-    statusOrder.PARTIALLY_REFUNDED,
-    statusOrder.PARTIALLY_SHIPPED,
     statusOrder.PENDING,
-    statusOrder.REFUNDED,
-    statusOrder.SHIPPED,
+    statusOrder.AWAITING_PICKUP,
+    statusOrder.SENDING,
+    statusOrder.DELIVERED,
+    statusOrder.CANCELLED
   ])
   status: statusOrder;
 }
