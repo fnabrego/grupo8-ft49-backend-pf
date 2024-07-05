@@ -7,7 +7,11 @@ import { UsersRepository } from 'src/users/users.repository';
 import { User } from 'src/users/users.entity';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { CreateUserDto } from 'src/users/users.dto';
+import {
+  CreateUserDto,
+  GoogleLoginUserDto,
+  LoginUserDto,
+} from 'src/users/users.dto';
 
 @Injectable()
 export class AuthService {
@@ -63,5 +67,32 @@ export class AuthService {
       token,
       userId: user.id,
     };
+  }
+
+  async googleSignIn(data: GoogleLoginUserDto) {
+    const { email } = data;
+    if (!email) throw new BadRequestException('Email required');
+
+    const user = await this.userRepository.getUserByEmail(email);
+
+    if (user) {
+      // Firma del token
+      const payload = {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+      };
+
+      // genera token
+      const token = this.jwtService.sign(payload);
+
+      return {
+        message: 'Logged in User',
+        token,
+        userId: user.id,
+      };
+    } else {
+      return false;
+    }
   }
 }

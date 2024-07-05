@@ -1,6 +1,10 @@
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CreateUserDto, LoginUserDto } from '../users/users.dto';
+import {
+  CreateUserDto,
+  GoogleLoginUserDto,
+  LoginUserDto,
+} from '../users/users.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { User } from 'src/users/users.entity';
 import { AuthGuard } from '@nestjs/passport';
@@ -22,7 +26,7 @@ export class AuthController {
       user: req.user,
     };
   }
-  
+
   @Post('signup')
   async signUp(@Body() user: CreateUserDto): Promise<Partial<User>> {
     return this.authService.signUp(user);
@@ -32,5 +36,10 @@ export class AuthController {
   signIn(@Body() credentials: LoginUserDto) {
     const { email, password } = credentials;
     return this.authService.signIn(email, password);
+  }
+
+  @Post('google/signin')
+  async googleSignIn(@Body() data: GoogleLoginUserDto) {
+    return this.authService.googleSignIn(data);
   }
 }
