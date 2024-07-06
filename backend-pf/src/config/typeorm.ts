@@ -26,8 +26,8 @@ const config = {
   entities: ['dist/**/*.entity{.ts,.js}'],
   migrations: ['dist/migrations/*{.ts,.js}'],
   autoLoadEntities: true,
-  logging: false,
-  synchronize: true,
+  logging: true,
+  synchronize: false,
   dropSchema: false,
 };
 
