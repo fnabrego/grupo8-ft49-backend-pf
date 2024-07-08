@@ -32,8 +32,8 @@ export class ShipmentsController {
     );
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard)
+  // @ApiBearerAuth()
+  // @UseGuards(AuthGuard)
   @Post('add')
   async postShipments(@Body() data: ShipmentDto): Promise<Shipment> {
     return await this.shipmentsService.postShipments(data);
