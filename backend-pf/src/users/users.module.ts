@@ -6,13 +6,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users.entity';
 import { Order } from '../orders/orders.entity';
 import { Receipt } from '../receipts/receipts.entity';
-import { admin, transportista } from 'src/utils/preloadUsers';
-import { Role } from 'src/roles/roles.enum';
+import { EmailRepository } from 'src/mails/emails.repository';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, Order, Receipt])],
   controllers: [UsersController],
-  providers: [UsersService, UsersRepository],
+  providers: [UsersService, UsersRepository, EmailRepository],
 })
 export class UsersModule implements OnModuleInit {
   constructor(private readonly usersService: UsersService) {}

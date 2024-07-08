@@ -63,8 +63,8 @@ export class OrdersController {
   }
 
   @HttpCode(200)
-  @Roles(Role.Admin, Role.Transporte)
-  @UseGuards(AuthGuard, RolesGuard)
+  // @Roles(Role.Admin, Role.Transporte)
+  // @UseGuards(AuthGuard, RolesGuard)
   @Put('/update/:id')
   updateOrder(
     @Param('id', ParseUUIDPipe) id: string,
