@@ -34,7 +34,7 @@ export class OrdersController {
 
   @HttpCode(200)
   @Get()
-  @Roles(Role.Admin)
+  @Roles(Role.Admin, Role.Transporte)
   @UseGuards(AuthGuard, RolesGuard)
   @ApiQuery({ name: 'page', required: false, type: Number })
   @ApiQuery({ name: 'limit', required: false, type: Number })
@@ -63,8 +63,8 @@ export class OrdersController {
   }
 
   @HttpCode(200)
-  // @Roles(Role.Admin, Role.Transporte)
-  // @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.Admin, Role.Transporte)
+  @UseGuards(AuthGuard, RolesGuard)
   @Put('/update/:id')
   updateOrder(
     @Param('id', ParseUUIDPipe) id: string,
