@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
 import { UsersRepository } from 'src/users/users.repository';
 import {
@@ -16,7 +16,8 @@ import {
 export class EmailRepository {
   private transporter;
 
-  constructor(private readonly usersRepository: UsersRepository) {
+  constructor(@Inject(forwardRef(() => UsersRepository))
+  private readonly usersRepository: UsersRepository) {
     this.transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 465,

@@ -127,3 +127,15 @@ export class LoginUserDto extends PickType(CreateUserDto, [
 ]) {}
 
 export class GoogleLoginUserDto extends PickType(CreateUserDto, ['email']) {}
+
+export class UpdateUserDto extends PickType(CreateUserDto, [
+  'address',
+  'companyName',
+  'cuit_cuil',
+  'dni',
+  'email',
+  'lastName',
+  'locality',
+  'name',
+  'profilePicture'
+]) {}
