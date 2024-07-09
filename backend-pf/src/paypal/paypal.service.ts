@@ -29,18 +29,28 @@ export class PaypalService {
         },
       }],
     });
-  
-    const response = await this.paypalClient.execute(request);
-    const orderId = response.result.id;
-    const approveUrl = response.result.links.find(link => link.rel === 'approve').href;
-    return { orderId, approveUrl };
+
+    try {
+      const response = await this.paypalClient.execute(request);
+      const orderId = response.result.id;
+      const approveUrl = response.result.links.find(link => link.rel === 'approve').href;
+      return { orderId, approveUrl };
+    } catch (error) {
+      console.error('Error creating order:', error);
+      throw error;
+    }
   }
-  
+
   async captureOrder(orderId: string): Promise<any> {
     const request = new paypal.orders.OrdersCaptureRequest(orderId);
     request.requestBody({});
-  
-    const response = await this.paypalClient.execute(request);
-    return response.result;
+
+    try {
+      const response = await this.paypalClient.execute(request);
+      return response.result;
+    } catch (error) {
+      console.error('Error capturing order:', error);
+      throw error;
+    }
   }
 }
