@@ -1,17 +1,15 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
   Param,
   ParseUUIDPipe,
-  Post,
   Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto, UpdateUserDto } from './users.dto';
+import { UpdateUserDto } from './users.dto';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/roles/roles.enum';
 import { RoleDto } from 'src/roles/roles.dto';
@@ -19,7 +17,6 @@ import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { changePassword } from './changePassword.dto';
-import { User } from './users.entity';
 
 @ApiBearerAuth()
 @ApiTags('Users')

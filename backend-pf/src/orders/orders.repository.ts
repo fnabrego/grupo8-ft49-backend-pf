@@ -44,7 +44,10 @@ export class OrdersRepository {
         where: { isDeleted: false },
         relations: {
           user: true,
-          shipments: true,
+          shipments: {
+            locality_origin: true,
+            locality_destination: true,
+          },
           packages: true,
           receipt: true,
         },
@@ -60,7 +63,15 @@ export class OrdersRepository {
 
     const skip = (page - 1) * limit;
     const orders = await this.ordersRepo.find({
-      relations: { user: true, shipments: true, packages: true, receipt: true },
+      relations: {
+        user: true,
+        shipments: {
+          locality_origin: true,
+          locality_destination: true,
+        },
+        packages: true,
+        receipt: true,
+      },
       take: limit,
       skip: skip,
     });
