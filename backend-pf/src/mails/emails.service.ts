@@ -17,4 +17,7 @@ export class EmailService {
   async sendEmailUpdateUser(id: string) {
     return this.emailRepository.sendEmailUpdateUser(id);
   }
+  async automatedPromotionalEmails() {
+    return await this.emailRepository.automatedPromotionalEmails();
+  }
 }

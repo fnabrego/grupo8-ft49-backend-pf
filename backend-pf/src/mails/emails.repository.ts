@@ -1,4 +1,9 @@
-import { forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  forwardRef,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
 import { UsersRepository } from 'src/users/users.repository';
 import {
@@ -16,8 +21,10 @@ import {
 export class EmailRepository {
   private transporter;
 
-  constructor(@Inject(forwardRef(() => UsersRepository))
-  private readonly usersRepository: UsersRepository) {
+  constructor(
+    @Inject(forwardRef(() => UsersRepository))
+    private readonly usersRepository: UsersRepository,
+  ) {
     this.transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 465,
@@ -110,6 +117,24 @@ export class EmailRepository {
       return info;
     } catch (error: any) {
       throw new Error(`Error al enviar el correo: ${error.message}`);
+    }
+  }
+  async automatedPromotionalEmails() {
+    const users = await this.usersRepository.getAllUsers();
+    if (users.length === 0) throw new NotFoundException('There are no users');
+    for (const user of users) {
+      const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: user.email,
+        subject: subject_updateUser,
+        html: html_updateUser,
+      };
+
+      try {
+        await this.transporter.sendMail(mailOptions);
+      } catch (error: any) {
+        throw new Error(`Error al enviar el correo: ${error.message}`);
+      }
     }
   }
 }
