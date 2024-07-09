@@ -12,7 +12,7 @@ import { UsersModule } from 'src/users/users.module';
 import { EmailModule } from 'src/mails/emails.module';
 
 @Module({
-  imports: [PassportModule, ConfigModule, TypeOrmModule.forFeature([User]), EmailModule],
+  imports: [PassportModule, ConfigModule, TypeOrmModule.forFeature([User])],
   controllers: [AuthController],
   providers: [AuthService, UsersRepository, GoogleStrategy, EmailRepository],
 })

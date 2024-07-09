@@ -11,7 +11,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './users.dto';
+import { CreateUserDto, UpdateUserDto } from './users.dto';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/roles/roles.enum';
 import { RoleDto } from 'src/roles/roles.dto';
@@ -19,6 +19,7 @@ import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { changePassword } from './changePassword.dto';
+import { User } from './users.entity';
 
 @ApiBearerAuth()
 @ApiTags('Users')
@@ -47,7 +48,7 @@ export class UsersController {
   @UseGuards(AuthGuard)
   updateUser(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() user: CreateUserDto,
+    @Body() user: UpdateUserDto,
   ) {
     return this.userService.updateUser(id, user);
   }

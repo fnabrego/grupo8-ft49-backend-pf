@@ -1,5 +1,7 @@
 import {
   BadRequestException,
+  forwardRef,
+  Inject,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -18,6 +20,8 @@ import { EmailRepository } from 'src/mails/emails.repository';
 export class UsersRepository {
   constructor(
     @InjectRepository(User) private usersRepository: Repository<User>,
+    @Inject(forwardRef(() => EmailRepository))
+    private readonly emailRepository: EmailRepository
   ) {}
 
   async getUsers(page: number, limit: number) {
@@ -71,7 +75,7 @@ export class UsersRepository {
     await this.usersRepository.update(id, user);
     const updatedUser = await this.usersRepository.findOneBy({ id });
     const { password, ...userNoPasswords } = updatedUser;
-    // await this.emailRepository.sendEmailUpdateUser(id);
+    await this.emailRepository.sendEmailUpdateUser(id);
     return userNoPasswords;
   }
 
@@ -97,7 +101,7 @@ export class UsersRepository {
 
     const { password, ...userNoPasswords } = foundUser;
 
-    // await this.emailRepository.sendEmailUpdateUser(id);
+    await this.emailRepository.sendEmailUpdateUser(id);
 
     return userNoPasswords;
   }
