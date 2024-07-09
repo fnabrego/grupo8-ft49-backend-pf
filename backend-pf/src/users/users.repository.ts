@@ -21,7 +21,7 @@ export class UsersRepository {
   constructor(
     @InjectRepository(User) private usersRepository: Repository<User>,
     @Inject(forwardRef(() => EmailRepository))
-    private readonly emailRepository: EmailRepository
+    private readonly emailRepository: EmailRepository,
   ) {}
 
   async getUsers(page: number, limit: number) {
@@ -141,5 +141,10 @@ export class UsersRepository {
     } else {
       return null;
     }
+  }
+
+  async getAllUsers() {
+    const users = await this.usersRepository.find();
+    return users;
   }
 }
