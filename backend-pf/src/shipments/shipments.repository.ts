@@ -42,9 +42,17 @@ export class ShipmentsRepository {
         destination: locality_destination,
       },
     });
-    console.log(calculatedShipment);
-    
-    shipmentPrice.shipment_price = calculatedShipment.price;
+    if (!calculatedShipment) {
+      const calculatedShipment2 = await this.shippingPriceRepository.findOne({
+        where: {
+          origin: locality_destination,
+          destination: locality_origin,
+        },
+      });
+      shipmentPrice.shipment_price = calculatedShipment2.price;
+    } else {
+      shipmentPrice.shipment_price = calculatedShipment.price;
+    }
     return shipmentPrice;
   }
   async postShipments(data: ShipmentDto): Promise<Shipment> {

@@ -15,6 +15,8 @@ import { AuthModule } from './auth/auth.module';
 import { FirebaseModule } from './firebase/firebase.module';
 import { FileUploadModule } from './file-upload/file-upload.module';
 import { EmailModule } from './mails/emails.module';
+import { PaypalModule } from './paypal/paypal.module';
+import paypalConfig from './config/paypal.config';
 
 @Module({
   imports: [
@@ -34,6 +36,10 @@ import { EmailModule } from './mails/emails.module';
     OrdersModule,
     FileUploadModule,
     EmailModule,
+    ConfigModule.forRoot({
+      load: [paypalConfig],
+    }),
+    PaypalModule,
     // ReceiptsModule,
 
     JwtModule.register({
@@ -44,6 +50,7 @@ import { EmailModule } from './mails/emails.module';
       },
     }),
     FirebaseModule,
+    PaypalModule,
   ],
   controllers: [AppController],
   providers: [AppService],

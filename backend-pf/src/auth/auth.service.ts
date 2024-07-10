@@ -12,12 +12,14 @@ import {
   GoogleLoginUserDto,
   LoginUserDto,
 } from 'src/users/users.dto';
+import { EmailRepository } from 'src/mails/emails.repository';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userRepository: UsersRepository,
     private readonly jwtService: JwtService,
+    private readonly emailRepository: EmailRepository,
   ) {}
 
   async signUp(user: CreateUserDto): Promise<Partial<User>> {
@@ -35,10 +37,12 @@ export class AuthService {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    return await this.userRepository.createUser({
+    const createdUser = await this.userRepository.createUser({
       ...user,
       password: hashedPassword,
     });
+    await this.emailRepository.sendEmailRegister(createdUser.id);
+    return createdUser;
   }
 
   async signIn(email: string, password: string) {

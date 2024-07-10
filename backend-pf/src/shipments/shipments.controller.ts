@@ -55,9 +55,4 @@ export class ShipmentsController {
   async deleteShipments(@Param('id', ParseUUIDPipe) id: string) {
     return await this.shipmentsService.deleteShipments(id);
   }
-
-  // @Get('prices/seeder')
-  // async preloadShipmentPrices() {
-  //   return await this.shipmentsService.preloadShipmentPrices();
-  // }
 }

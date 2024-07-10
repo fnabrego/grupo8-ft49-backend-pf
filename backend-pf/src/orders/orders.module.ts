@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { OrdersController } from './orders.controller';
 import { OrdersService } from './orders.service';
-import { OrdersRepository } from './orders.reposirory';
+import { OrdersRepository } from './orders.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Order } from './orders.entity';
 import { User } from '../users/users.entity';
@@ -13,10 +13,30 @@ import { PackagesRepository } from '../packages/packages.repository';
 import { ShippingPrice } from '../shipments/prices/shippingprices.entity';
 import { Locality } from '../localities/localities.entity';
 import { PackagePrices } from '../packages/prices.entity';
+import { EmailRepository } from 'src/mails/emails.repository';
+import { UsersRepository } from 'src/users/users.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Order, User, Shipment, Package, Receipt, ShippingPrice, Locality, PackagePrices])],
+  imports: [
+    TypeOrmModule.forFeature([
+      Order,
+      User,
+      Shipment,
+      Package,
+      Receipt,
+      ShippingPrice,
+      Locality,
+      PackagePrices,
+    ]),
+  ],
   controllers: [OrdersController],
-  providers: [OrdersService, OrdersRepository, ShipmentsRepository, PackagesRepository]
+  providers: [
+    OrdersService,
+    OrdersRepository,
+    ShipmentsRepository,
+    PackagesRepository,
+    EmailRepository,
+    UsersRepository,
+  ],
 })
-export class OrdersModule { }
+export class OrdersModule {}

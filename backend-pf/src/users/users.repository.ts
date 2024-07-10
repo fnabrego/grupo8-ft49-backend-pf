@@ -1,5 +1,7 @@
 import {
   BadRequestException,
+  forwardRef,
+  Inject,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -12,11 +14,14 @@ import { CreateUserDto } from './users.dto';
 import { changePassword } from './changePassword.dto';
 import { admin, transportista } from 'src/utils/preloadUsers';
 import { Role } from 'src/roles/roles.enum';
+import { EmailRepository } from 'src/mails/emails.repository';
 
 @Injectable()
 export class UsersRepository {
   constructor(
     @InjectRepository(User) private usersRepository: Repository<User>,
+    @Inject(forwardRef(() => EmailRepository))
+    private readonly emailRepository: EmailRepository,
   ) {}
 
   async getUsers(page: number, limit: number) {
@@ -37,9 +42,12 @@ export class UsersRepository {
     const user = await this.usersRepository.findOne({
       where: { id },
       relations: {
-        orders: { shipments: {
-          locality_origin:true, locality_destination:true,
-        } },
+        orders: {
+          shipments: {
+            locality_origin: true,
+            locality_destination: true,
+          },
+        },
       },
     });
     if (!user)
@@ -67,7 +75,7 @@ export class UsersRepository {
     await this.usersRepository.update(id, user);
     const updatedUser = await this.usersRepository.findOneBy({ id });
     const { password, ...userNoPasswords } = updatedUser;
-
+    await this.emailRepository.sendEmailUpdateUser(id);
     return userNoPasswords;
   }
 
@@ -92,6 +100,8 @@ export class UsersRepository {
     await this.usersRepository.save(foundUser);
 
     const { password, ...userNoPasswords } = foundUser;
+
+    await this.emailRepository.sendEmailUpdateUser(id);
 
     return userNoPasswords;
   }
@@ -131,5 +141,10 @@ export class UsersRepository {
     } else {
       return null;
     }
+  }
+
+  async getAllUsers() {
+    const users = await this.usersRepository.find();
+    return users;
   }
 }

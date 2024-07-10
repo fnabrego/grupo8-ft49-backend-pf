@@ -14,6 +14,7 @@ import { ShipmentDto } from '../shipments/shipments.dto';
 import { PackagesRepository } from '../packages/packages.repository';
 import { ShipmentsRepository } from '../shipments/shipments.repository';
 import { statusOrder } from './statusOrder.enum';
+import { EmailRepository } from 'src/mails/emails.repository';
 
 @Injectable()
 export class OrdersRepository {
@@ -22,6 +23,7 @@ export class OrdersRepository {
     @InjectRepository(User) private usersRepo: Repository<User>,
     private readonly packagesRepository: PackagesRepository,
     private readonly shipmentsRepository: ShipmentsRepository,
+    private readonly emailRepository: EmailRepository,
   ) {}
 
   async getOrder(id: string): Promise<Order> {
@@ -42,7 +44,10 @@ export class OrdersRepository {
         where: { isDeleted: false },
         relations: {
           user: true,
-          shipments: true,
+          shipments: {
+            locality_origin: true,
+            locality_destination: true,
+          },
           packages: true,
           receipt: true,
         },
@@ -58,7 +63,15 @@ export class OrdersRepository {
 
     const skip = (page - 1) * limit;
     const orders = await this.ordersRepo.find({
-      relations: { user: true, shipments: true, packages: true, receipt: true },
+      relations: {
+        user: true,
+        shipments: {
+          locality_origin: true,
+          locality_destination: true,
+        },
+        packages: true,
+        receipt: true,
+      },
       take: limit,
       skip: skip,
     });
@@ -119,12 +132,14 @@ export class OrdersRepository {
       await this.shipmentsRepository.deleteShipments(newShipment.id);
       throw new InternalServerErrorException('Create Order failled');
     }
+    await this.emailRepository.sendEmailOrder(id);
     return confirmOrder;
   }
 
   async updateOrder(id: string, data: UpdateOrdertDto): Promise<Order> {
     const foundOrder = await this.ordersRepo.findOne({
       where: { id, isDeleted: false },
+      relations: { user: true },
     });
     if (!foundOrder) {
       throw new NotFoundException(`Order with id ${id} not found`);
@@ -135,6 +150,7 @@ export class OrdersRepository {
     // order.receipt = receipt;
     await this.ordersRepo.update(id, order);
     const orderCheck = await this.ordersRepo.findOneBy({ id });
+    await this.emailRepository.sendEmailStatus(foundOrder.user.id);
     return orderCheck;
   }
 

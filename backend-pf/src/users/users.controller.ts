@@ -1,17 +1,15 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
   Param,
   ParseUUIDPipe,
-  Post,
   Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './users.dto';
+import { UpdateUserDto } from './users.dto';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/roles/roles.enum';
 import { RoleDto } from 'src/roles/roles.dto';
@@ -47,7 +45,7 @@ export class UsersController {
   @UseGuards(AuthGuard)
   updateUser(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() user: CreateUserDto,
+    @Body() user: UpdateUserDto,
   ) {
     return this.userService.updateUser(id, user);
   }
