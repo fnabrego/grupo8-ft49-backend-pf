@@ -3,7 +3,8 @@ import { PackageSize } from './packages.enum';
 
 export class PackageDto {
   /**
-   * Package size, must be one of the 3 valid types of packages
+   * El tamaño del paquete, debe ser uno de los 3 tipos de paquetes válidos.
+
    * @example medium
    */
   @IsNotEmpty()
