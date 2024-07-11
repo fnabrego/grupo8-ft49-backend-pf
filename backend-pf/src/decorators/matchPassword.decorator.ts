@@ -19,6 +19,6 @@ export class MatchPassword implements ValidatorConstraintInterface {
     return true;
   }
   defaultMessage(args?: ValidationArguments): string {
-    return 'El password y la confirmacion no coinciden';
+    return 'Password and confirmation do not match';
   }
 }

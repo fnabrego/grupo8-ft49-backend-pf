@@ -18,7 +18,7 @@ export class EmailModule implements OnModuleInit {
   async onModuleInit() {
     cron.schedule('*/10 * * * *', async () => {
       await this.emailService.automatedPromotionalEmails();
-      console.log('Emails promocionales enviados');
+      console.log('Promotional emails sent');
     });
   }
 }

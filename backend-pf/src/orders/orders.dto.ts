@@ -31,7 +31,7 @@ export class CreateOrderDto {
 export class UpdateOrdertDto {
   @ApiProperty({
     description:
-      'Se reciebe un estado de envío: PENDING | AWAITING_PAYMENT | AWAITING_FULFILLMENT | AWAITING_SHIPMENT | AWAITING_PICKUP | PARTIALLY_SHIPPED | COMPLETED | SHIPPED | CANCELLED | DECLINED | REFUNDED | DISPUTED | MANUAL_VERIFICATION | PARTIALLY_REFUNDED',
+      'Se reciebe un estado de envío: PENDING | AWAITING_PICKUP | SENDING | DELIVERED | CANCELLED',
     example: 'aceptado',
   })
   @IsString()
@@ -40,7 +40,7 @@ export class UpdateOrdertDto {
     statusOrder.AWAITING_PICKUP,
     statusOrder.SENDING,
     statusOrder.DELIVERED,
-    statusOrder.CANCELLED
+    statusOrder.CANCELLED,
   ])
   status: statusOrder;
 }
