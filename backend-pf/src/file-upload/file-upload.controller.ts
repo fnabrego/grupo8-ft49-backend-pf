@@ -16,6 +16,7 @@ import {
   ApiBearerAuth,
   ApiBody,
   ApiConsumes,
+  ApiOperation,
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
@@ -27,11 +28,12 @@ import {
 export class FileUploadController {
   constructor(private readonly fileUploadService: FileUploadService) {}
   @Post('uploadImage/:id')
+  @ApiOperation({ summary: 'Subir una imagen de perfil' })
   @UseInterceptors(FileInterceptor('file'))
   @ApiConsumes('multipart/form-data')
   @ApiParam({
     name: 'id',
-    description: 'The ID of the user',
+    description: 'ID del usuario',
     type: 'string',
   })
   @ApiBody({
@@ -41,7 +43,7 @@ export class FileUploadController {
         file: {
           type: 'string',
           format: 'binary',
-          description: 'The image file to upload',
+          description: 'Imagen a subir',
         },
       },
     },

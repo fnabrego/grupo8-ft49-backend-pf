@@ -13,13 +13,13 @@ import { PackageSize } from './packages.enum';
 })
 export class Package {
   /**
-   * Primary generated column, type uuid
+   * Columna primaria generada, escriba uuid
    */
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   /**
-   * Package size, enum, not nullable.
+   * Tamaño del paquete, enum, no anulable.
    * @example medium
    */
   @Column({
@@ -30,7 +30,7 @@ export class Package {
   size: PackageSize;
 
   /**
-   * Package price, not nullable, type int
+   * Precio del paquete, no nullable, escriba int
    */
   @Column({
     type: 'int',

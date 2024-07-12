@@ -53,7 +53,7 @@ export class EmailRepository {
       const info = await this.transporter.sendMail(mailOptions);
       return info;
     } catch (error: any) {
-      throw new Error(`Error al enviar el correo: ${error.message}`);
+      throw new Error(`Error sending email: ${error.message}`);
     }
   }
 
@@ -74,7 +74,7 @@ export class EmailRepository {
       const info = await this.transporter.sendMail(mailOptions);
       return info;
     } catch (error: any) {
-      throw new Error(`Error al enviar el correo: ${error.message}`);
+      throw new Error(`Error sending email: ${error.message}`);
     }
   }
 
@@ -95,7 +95,7 @@ export class EmailRepository {
       const info = await this.transporter.sendMail(mailOptions);
       return info;
     } catch (error: any) {
-      throw new Error(`Error al enviar el correo: ${error.message}`);
+      throw new Error(`Error sending email: ${error.message}`);
     }
   }
 
@@ -116,7 +116,7 @@ export class EmailRepository {
       const info = await this.transporter.sendMail(mailOptions);
       return info;
     } catch (error: any) {
-      throw new Error(`Error al enviar el correo: ${error.message}`);
+      throw new Error(`Error sending email: ${error.message}`);
     }
   }
   async automatedPromotionalEmails() {
@@ -133,7 +133,7 @@ export class EmailRepository {
       try {
         await this.transporter.sendMail(mailOptions);
       } catch (error: any) {
-        throw new Error(`Error al enviar el correo: ${error.message}`);
+        throw new Error(`Error sending email: ${error.message}`);
       }
     }
   }

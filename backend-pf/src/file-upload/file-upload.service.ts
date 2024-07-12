@@ -16,7 +16,7 @@ export class FileUploadService {
     const user = await this.usersRepository.findOneBy({ id });
 
     if (!user) {
-      throw new NotFoundException(`Usuario con ${id} no ha sido encontrado`);
+      throw new NotFoundException(`User with ${id} has not been found`);
     }
 
     const uploadedImage = await this.fileUploadRepository.uploadImage(file);
