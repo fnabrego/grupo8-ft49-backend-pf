@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseUUIDPipe,
@@ -72,5 +73,15 @@ export class UsersController {
     @Body() user: RoleDto,
   ) {
     return this.userService.updateUser(id, user);
+  }
+
+  @Delete(':id')
+  @ApiOperation({ summary: 'Eliminar usuario' })
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.Admin, Role.User)
+  deleteUser(
+    @Param('id', ParseUUIDPipe) id: string
+  ) {
+    return this.userService.deleteUser(id);
   }
 }
