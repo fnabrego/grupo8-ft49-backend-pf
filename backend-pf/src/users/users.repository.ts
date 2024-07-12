@@ -10,7 +10,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { User } from './users.entity';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from './users.dto';
 import { changePassword } from './changePassword.dto';
 import { admin, transportista } from 'src/utils/preloadUsers';
 import { Role } from 'src/roles/roles.enum';
@@ -47,6 +46,7 @@ export class UsersRepository {
             locality_origin: true,
             locality_destination: true,
           },
+          receipt:true,
         },
       },
     });

@@ -4,10 +4,12 @@ import {
   PrimaryGeneratedColumn,
   JoinColumn,
   OneToMany,
+  ManyToOne,
 } from 'typeorm';
 import { Role } from 'src/roles/roles.enum';
 import { Order } from '../orders/orders.entity';
 import { Receipt } from '../receipts/receipts.entity';
+import { Review } from 'src/reviews/reviews.entity';
 
 @Entity({
   name: 'users',
@@ -130,4 +132,14 @@ export class User {
   @OneToMany(() => Receipt, (receipt) => receipt.user)
   @JoinColumn()
   receipt: Receipt;
+
+  @OneToMany(() => Review, (review) => review.user)
+  @JoinColumn()
+  reviews: Review[];
+  /**
+   * @description Estado eliminacion, en false indica que existe
+   * @example 'false'
+   */
+  @Column({ default: false })
+  isDeleted: boolean;
 }
