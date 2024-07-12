@@ -47,8 +47,9 @@ export class Order {
   /**
    * @description Datos del recibo/factura
    */
-  @OneToOne(() => Receipt, (receipt) => receipt.orders)
-  receipt?: Receipt;
+  @OneToOne(() => Receipt, (receipt) => receipt.order)
+  @JoinColumn({ name: 'receipt_id' })
+  receipt: Receipt;
 
   /**
    * @description Fecha de generación de Orden

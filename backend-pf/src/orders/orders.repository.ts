@@ -15,6 +15,8 @@ import { PackagesRepository } from '../packages/packages.repository';
 import { ShipmentsRepository } from '../shipments/shipments.repository';
 import { statusOrder } from './statusOrder.enum';
 import { EmailRepository } from 'src/mails/emails.repository';
+import { Receipt } from '../receipts/receipts.entity';
+import { ReceiptsRepository } from '../receipts/receipts.repository';
 
 @Injectable()
 export class OrdersRepository {
@@ -24,7 +26,8 @@ export class OrdersRepository {
     private readonly packagesRepository: PackagesRepository,
     private readonly shipmentsRepository: ShipmentsRepository,
     private readonly emailRepository: EmailRepository,
-  ) {}
+    private readonly receiptRepository: ReceiptsRepository,
+  ) { }
 
   async getOrder(id: string): Promise<Order> {
     const order = await this.ordersRepo.findOne({
@@ -132,8 +135,21 @@ export class OrdersRepository {
       await this.shipmentsRepository.deleteShipments(newShipment.id);
       throw new InternalServerErrorException('Create Order failled');
     }
-    await this.emailRepository.sendEmailOrder(id);
-    return confirmOrder;
+    // await this.emailRepository.sendEmailOrder(id);
+
+    const receipt = new Receipt();
+    receipt.user = userNoPassword;
+    // receipt.order = confirmOrder;
+    const newReceipt = await this.receiptRepository.createReceipt(receipt);
+    confirmOrder.receipt = newReceipt;
+    const finalOrder = await this.ordersRepo.save(confirmOrder);
+    
+    if (!finalOrder) {
+      await this.packagesRepository.deletePackage(newPackage.id);
+      await this.shipmentsRepository.deleteShipments(newShipment.id);
+      throw new InternalServerErrorException('Create Order failled');
+    }
+    return finalOrder;
   }
 
   async updateOrder(id: string, data: UpdateOrdertDto): Promise<Order> {
