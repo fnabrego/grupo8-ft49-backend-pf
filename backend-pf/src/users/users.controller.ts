@@ -13,7 +13,7 @@ import { UpdateUserDto } from './users.dto';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/roles/roles.enum';
 import { RoleDto } from 'src/roles/roles.dto';
-import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { changePassword } from './changePassword.dto';
@@ -25,6 +25,7 @@ export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
   @Get()
+  @ApiOperation({ summary: 'Obtener todos los usuarios con paginado' })
   @Roles(Role.Admin)
   @UseGuards(AuthGuard, RolesGuard)
   @ApiQuery({ name: 'page', required: false, type: Number })
@@ -36,12 +37,14 @@ export class UsersController {
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Obtener un usuario por id' })
   @UseGuards(AuthGuard)
   getUser(@Param('id', ParseUUIDPipe) id: string) {
     return this.userService.getUser(id);
   }
 
   @Put(':id')
+  @ApiOperation({ summary: 'Actualizar la informacion de un usuario' })
   @UseGuards(AuthGuard)
   updateUser(
     @Param('id', ParseUUIDPipe) id: string,
@@ -51,6 +54,7 @@ export class UsersController {
   }
 
   @Put('changepassword/:id')
+  @ApiOperation({ summary: 'Cambiar la contraseña de un usuario' })
   @UseGuards(AuthGuard)
   updatePasswordUser(
     @Param('id', ParseUUIDPipe) id: string,
@@ -60,6 +64,7 @@ export class UsersController {
   }
 
   @Put('role/:id')
+  @ApiOperation({ summary: 'Cambiar el rol de un usuario' })
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.Admin)
   updateRoleUser(

@@ -11,7 +11,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto, QuoteOrderDto, UpdateOrdertDto } from './orders.dto';
 import { Roles } from 'src/decorators/roles.decorator';
@@ -28,12 +28,14 @@ export class OrdersController {
   @HttpCode(200)
   @UseGuards(AuthGuard)
   @Get(':id')
+  @ApiOperation({ summary: 'Obtener una orden por id' })
   getOrder(@Param('id', ParseUUIDPipe) id: string) {
     return this.ordersService.getOrder(id);
   }
 
   @HttpCode(200)
   @Get()
+  @ApiOperation({ summary: 'Obtener todas las ordenes con paginado' })
   @Roles(Role.Admin, Role.Transporte)
   @UseGuards(AuthGuard, RolesGuard)
   @ApiQuery({ name: 'page', required: false, type: Number })
@@ -46,6 +48,7 @@ export class OrdersController {
 
   @HttpCode(200)
   @Post('quoter')
+  @ApiOperation({ summary: 'Cotizar un envio' })
   quoteOrder(@Body() order: QuoteOrderDto) {
     const { packages, shipment } = order;
     return this.ordersService.quoteOrder(packages, shipment);
@@ -54,6 +57,7 @@ export class OrdersController {
   @HttpCode(201)
   @UseGuards(AuthGuard)
   @Post('/new/:id')
+  @ApiOperation({ summary: 'Crear una orden de envio' })
   addOrder(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() order: CreateOrderDto,
@@ -66,6 +70,7 @@ export class OrdersController {
   @Roles(Role.Admin, Role.Transporte)
   @UseGuards(AuthGuard, RolesGuard)
   @Put('/update/:id')
+  @ApiOperation({ summary: 'Actualizar la informacion de una Orden' })
   updateOrder(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() order: UpdateOrdertDto,
@@ -77,6 +82,7 @@ export class OrdersController {
   @Roles(Role.Admin)
   @UseGuards(AuthGuard, RolesGuard)
   @Delete('/delete/:id')
+  @ApiOperation({ summary: 'Eliminar una Orden' })
   deleteOrder(@Param('id', ParseUUIDPipe) id: string) {
     return this.ordersService.deleteOrder(id);
   }
