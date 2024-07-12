@@ -10,10 +10,13 @@ import { EmailRepository } from 'src/mails/emails.repository';
 import { EmailModule } from 'src/mails/emails.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Order, Receipt]), forwardRef(() => EmailModule)],
+  imports: [
+    TypeOrmModule.forFeature([User, Order, Receipt]),
+    forwardRef(() => EmailModule),
+  ],
   controllers: [UsersController],
   providers: [UsersService, UsersRepository],
-  exports: [UsersRepository]
+  exports: [UsersRepository],
 })
 export class UsersModule implements OnModuleInit {
   constructor(private readonly usersService: UsersService) {}
