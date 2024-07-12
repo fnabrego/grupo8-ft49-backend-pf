@@ -11,7 +11,7 @@ export class FirebaseController {
   ) {}
 
   @Post('recibos')
-  @ApiOperation({ summary: 'Subir un archivo a Firebase Storage' })
+  @ApiOperation({ summary: 'Subir un recibo a Firebase Storage' })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -32,7 +32,7 @@ export class FirebaseController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Obtener la lista de archivos en un directorio con paginación' })
+  @ApiOperation({ summary: 'Obtener la lista de recibos en un directorio con paginación' })
   @ApiQuery({ name: 'folderPath', required: true, description: 'Ruta de la carpeta en Firebase Storage' })
   @ApiQuery({ name: 'limit', required: false, description: 'Número de archivos por página', example: '10' })
   @ApiQuery({ name: 'pageToken', required: false, description: 'Token de la página para paginación' })
@@ -46,7 +46,7 @@ export class FirebaseController {
   }
 
   @Get('download')
-  @ApiOperation({ summary: 'Descargar un archivo de Firebase Storage' })
+  @ApiOperation({ summary: 'Descargar un recibo de Firebase Storage' })
   @ApiQuery({ name: 'filePath', required: true, description: 'Ruta completa del archivo en Firebase Storage' })
   async downloadFile(
     @Query('filePath') filePath: string,

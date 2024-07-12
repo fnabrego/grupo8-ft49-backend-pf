@@ -10,7 +10,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PackagesService } from './packages.service';
 import { PackageDto } from './packages.dto';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
@@ -25,11 +25,13 @@ export class PackagesController {
   constructor(private readonly packagesService: PackagesService) {}
 
   @Get()
+  @ApiOperation({ summary: 'Obtener todos los paquetes con paginado' })
   getPackages(@Query('page') page: string, @Query('limit') limit: string) {
     return this.packagesService.getPackages(Number(page), Number(limit));
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Obtener un paquete por id' })
   @Roles(Role.Admin)
   @UseGuards(AuthGuard)
   getPackage(@Param('id', ParseUUIDPipe) id: string) {
@@ -37,6 +39,7 @@ export class PackagesController {
   }
 
   @Post()
+  @ApiOperation({ summary: 'Crear un paquete' })
   @Roles(Role.Admin)
   @UseGuards(AuthGuard)
   addPackage(@Body() addpackage: PackageDto) {
@@ -44,6 +47,7 @@ export class PackagesController {
   }
 
   @Put('price')
+  @ApiOperation({ summary: 'Actualizar la lista de precios por tamaño de los paquetes' })
   @Roles(Role.Admin)
   @UseGuards(AuthGuard, RolesGuard)
   updatePrice(@Body() updatePrice: PackagePricesDto) {
@@ -51,6 +55,7 @@ export class PackagesController {
   }
 
   @Put(':id')
+  @ApiOperation({ summary: 'Actualizar la informacion de un paquete' })
   @Roles(Role.Admin)
   @UseGuards(AuthGuard)
   updatePackage(
@@ -61,6 +66,7 @@ export class PackagesController {
   }
 
   @Delete(':id')
+  @ApiOperation({ summary: 'Eliminar un paquete' })
   @Roles(Role.Admin)
   @UseGuards(AuthGuard, RolesGuard)
   deletePackage(@Param('id', ParseUUIDPipe) id: string) {

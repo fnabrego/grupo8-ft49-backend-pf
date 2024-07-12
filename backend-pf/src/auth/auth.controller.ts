@@ -5,7 +5,7 @@ import {
   GoogleLoginUserDto,
   LoginUserDto,
 } from '../users/users.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { User } from 'src/users/users.entity';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -14,31 +14,21 @@ import { AuthGuard } from '@nestjs/passport';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Get('google')
-  @UseGuards(AuthGuard('google'))
-  async googleAuth(@Req() req) {}
-
-  @Get('google/callback')
-  @UseGuards(AuthGuard('google'))
-  googleAuthRedirect(@Req() req) {
-    return {
-      message: 'User information from Google',
-      user: req.user,
-    };
-  }
-
   @Post('signup')
+  @ApiOperation({ summary: 'Registrar una cuenta' })
   async signUp(@Body() user: CreateUserDto): Promise<Partial<User>> {
     return this.authService.signUp(user);
   }
 
   @Post('signin')
+  @ApiOperation({ summary: 'Iniciar sesion' })
   signIn(@Body() credentials: LoginUserDto) {
     const { email, password } = credentials;
     return this.authService.signIn(email, password);
   }
 
   @Post('google/signin')
+  @ApiOperation({ summary: 'Registrarse e iniciar sesion con google' })
   async googleSignIn(@Body() data: GoogleLoginUserDto) {
     return this.authService.googleSignIn(data);
   }
