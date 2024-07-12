@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { ReviewDto } from './reviews.dto';
 import { ReviewsService } from './reviews.service';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Role } from 'src/roles/roles.enum';
@@ -22,7 +22,8 @@ export class ReviewsController {
   constructor(private readonly reviewsService: ReviewsService) {}
 
   @Post('/new/:id')
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
+  @ApiOperation({ summary: 'Subir una reseña con id de usuario' })
   async createReview(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() review: ReviewDto,
@@ -31,6 +32,7 @@ export class ReviewsController {
   }
 
   @Get('/rating')
+  @ApiOperation({ summary: 'Obtener promedio de rating de Reviews' })
   async getRating() {
     return await this.reviewsService.getRating();
   }
@@ -38,6 +40,9 @@ export class ReviewsController {
   @Get()
   @UseGuards(RolesGuard, AuthGuard)
   @Roles(Role.Admin)
+  @ApiOperation({
+    summary: 'Obtener todas las Reviews, comentarios y rating',
+  })
   async getReviews() {
     return await this.reviewsService.getReviews();
   }
