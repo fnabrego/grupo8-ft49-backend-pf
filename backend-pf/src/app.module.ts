@@ -16,6 +16,7 @@ import { FirebaseModule } from './firebase/firebase.module';
 import { FileUploadModule } from './file-upload/file-upload.module';
 import { EmailModule } from './mails/emails.module';
 import { PaypalModule } from './paypal/paypal.module';
+import { ReviewsModule } from './reviews/reviews.module';
 import paypalConfig from './config/paypal.config';
 
 @Module({
@@ -51,6 +52,7 @@ import paypalConfig from './config/paypal.config';
     }),
     FirebaseModule,
     PaypalModule,
+    ReviewsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
