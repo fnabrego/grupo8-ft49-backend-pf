@@ -27,4 +27,7 @@ export class UsersService {
   preload() {
     return this.usersRepository.preload();
   }
+  deleteUser(id: string) {
+    return this.usersRepository.deleteUser(id);
+  }
 }
