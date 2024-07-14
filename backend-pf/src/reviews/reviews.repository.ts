@@ -31,7 +31,10 @@ export class ReviewsRepository {
       totalRating += review.rating;
     }
     const average = totalRating / reviews.length;
-    return average.toFixed(1);
+    return {
+      average: average.toFixed(1),
+      totalReviews: reviews.length,
+    };
   }
 
   async getReviews() {
