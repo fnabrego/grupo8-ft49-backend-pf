@@ -27,7 +27,7 @@ export class OrdersRepository {
     private readonly shipmentsRepository: ShipmentsRepository,
     private readonly emailRepository: EmailRepository,
     private readonly receiptRepository: ReceiptsRepository,
-  ) { }
+  ) {}
 
   async getOrder(id: string): Promise<Order> {
     const order = await this.ordersRepo.findOne({
@@ -142,7 +142,7 @@ export class OrdersRepository {
     const newReceipt = await this.receiptRepository.createReceipt(receipt);
     confirmOrder.receipt = newReceipt;
     const finalOrder = await this.ordersRepo.save(confirmOrder);
-    
+
     if (!finalOrder) {
       await this.packagesRepository.deletePackage(newPackage.id);
       await this.shipmentsRepository.deleteShipments(newShipment.id);
@@ -165,7 +165,9 @@ export class OrdersRepository {
     // order.receipt = receipt;
     await this.ordersRepo.update(id, order);
     const orderCheck = await this.ordersRepo.findOneBy({ id });
-    await this.emailRepository.sendEmailStatus(foundOrder.user.id);
+    if (orderCheck.status === 'Entregado')
+      await this.emailRepository.sendReviewUsEmail(foundOrder.user.id);
+    else await this.emailRepository.sendEmailStatus(foundOrder.user.id);
     return orderCheck;
   }
 
