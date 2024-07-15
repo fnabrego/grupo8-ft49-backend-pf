@@ -1,4 +1,5 @@
 import { ApiHideProperty, ApiProperty, PickType } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
 import {
   IsEmail,
   // IsEmpty,
@@ -43,6 +44,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
   @MaxLength(30)
+  @Transform(({ value }) => value || 'XXXXXXXXX')
   lastName: string;
 
   @ApiProperty({

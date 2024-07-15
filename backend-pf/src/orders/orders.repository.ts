@@ -126,7 +126,7 @@ export class OrdersRepository {
     newOrder.packages = [newPackage];
     newOrder.final_price = finalPrice;
     newOrder.date = new Date();
-    newOrder.status = statusOrder.PENDING;
+    newOrder.status = statusOrder.AWAITING_PICKUP;
     newOrder.shipments = newShipment;
 
     const confirmOrder = await this.ordersRepo.save(newOrder);
