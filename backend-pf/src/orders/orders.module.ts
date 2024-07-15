@@ -15,6 +15,7 @@ import { Locality } from '../localities/localities.entity';
 import { PackagePrices } from '../packages/prices.entity';
 import { EmailRepository } from 'src/mails/emails.repository';
 import { UsersRepository } from 'src/users/users.repository';
+import { ReceiptsRepository } from '../receipts/receipts.repository';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { UsersRepository } from 'src/users/users.repository';
     PackagesRepository,
     EmailRepository,
     UsersRepository,
+    ReceiptsRepository
   ],
 })
 export class OrdersModule {}

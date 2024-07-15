@@ -124,6 +124,12 @@ export class User {
     default: 'https://cdn-icons-png.flaticon.com/512/6676/6676016.png',
   })
   profilePicture: string;
+/**
+   * @description Estado eliminacion, en false indica que existe
+   * @example 'false'
+   */
+  @Column({ default: false })
+  isDeleted: boolean;
 
   @OneToMany(() => Order, (order) => order.user)
   @JoinColumn()
@@ -136,4 +142,5 @@ export class User {
   @OneToMany(() => Review, (review) => review.user)
   @JoinColumn()
   reviews: Review[];
+
 }

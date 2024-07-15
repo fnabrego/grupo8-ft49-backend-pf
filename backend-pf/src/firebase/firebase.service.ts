@@ -22,7 +22,8 @@ export class FirebaseService {
     try {
       await uploadBytes(storageRef, file.buffer);
       console.log('File uploaded to the cloud');
-      return 'File uploaded successfully';
+      // return 'File uploaded successfully';
+      return filePath;
     } catch (error: any) {
       throw new Error(error);
     }

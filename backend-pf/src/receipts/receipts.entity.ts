@@ -1,15 +1,7 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { JoinAttribute } from 'typeorm/query-builder/JoinAttribute';
-import { User } from '../users/users.entity';
-import { Order } from '../orders/orders.entity';
+
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "../users/users.entity";
+import { Order } from "../orders/orders.entity";
 
 @Entity({
   name: 'receipts',
@@ -18,17 +10,19 @@ export class Receipt {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => User, (user) => user.receipt)
-  @JoinColumn({ name: 'user_id' })
-  user: User;
 
-  @OneToOne(() => Order, (order) => order.receipt)
-  @JoinColumn()
-  orders: Order;
+    @ManyToOne(() => User, (user) => user.receipt)
+    @JoinColumn({ name: 'user_id' })
+    user: Partial<User>;
 
-  @Column({
-    type: 'varchar',
-    length: 50,
-  })
-  link: string;
+    @OneToOne(() => Order, (order) => order.receipt)
+    order: Partial<Order>;
+
+    @Column({
+        type: 'varchar',
+        length: 50,
+        nullable:true
+    })
+    link?: string;
 }
+

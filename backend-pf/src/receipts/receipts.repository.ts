@@ -3,20 +3,15 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Receipt } from './receipts.entity';
 import { Repository } from 'typeorm';
-import { ReceiptDto } from './receipts.dto';
-import { Order } from 'src/orders/orders.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
-export class receiptsRepository {
+export class ReceiptsRepository {
   constructor(
-    @InjectRepository(Receipt)
-    private receiptsRepository: Repository<Receipt>,
-    @InjectRepository(Order)
-    private ordersRepository: Repository<Order>,
-  ) {}
+    @InjectRepository(Receipt) private receiptsRepository: Repository<Receipt>,
+  ) { }
 
   async getReceipts(page: number, limit: number): Promise<Receipt[]> {
     if (page < 1 || limit < 1) {
@@ -40,11 +35,24 @@ export class receiptsRepository {
     return receipt;
   }
 
-  // async createReceipt(data: ReceiptDto): Promise<Receipt> {
-  //     const order = await this.ordersRepository.findOne({where: {id: data.orderId}})
-  //     if(!order) {
-  //         throw new NotFoundException('Order not found')
-  //     }
+  async createReceipt(receipt: Partial<Receipt>): Promise<Receipt> {
+    const newReceipt = await this.receiptsRepository.save(receipt);
+    if (!receipt) {
+      throw new NotFoundException(`Fail created Receipt`);
+    }
+    return newReceipt;
+  }
 
-  // }
+
+  async updateReceipt(id: string, link: string): Promise <Receipt> {
+    const foundReceipt = await this.receiptsRepository.findOneBy({ id });
+    if (!foundReceipt) {
+      throw new NotFoundException(`Receipt with id ${id} not found`);
+    }
+    
+    foundReceipt.link = link;
+    const receiptUpdated = await this.receiptsRepository.save(foundReceipt);
+
+    return receiptUpdated;
+  }
 }

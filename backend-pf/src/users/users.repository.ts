@@ -10,7 +10,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { User } from './users.entity';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from './users.dto';
 import { changePassword } from './changePassword.dto';
 import { admin, transportista } from 'src/utils/preloadUsers';
 import { Role } from 'src/roles/roles.enum';
@@ -22,7 +21,7 @@ export class UsersRepository {
     @InjectRepository(User) private usersRepository: Repository<User>,
     @Inject(forwardRef(() => EmailRepository))
     private readonly emailRepository: EmailRepository,
-  ) {}
+  ) { }
 
   async getUsers(page: number, limit: number) {
     if (page < 1 || limit < 1) {
@@ -31,22 +30,24 @@ export class UsersRepository {
 
     const skip = (page - 1) * limit;
     const users = await this.usersRepository.find({
+      where: { isDeleted: false },
       take: limit,
       skip: skip,
-    });
-
+    },
+    )
     return users.map(({ password, ...userNoPassword }) => userNoPassword);
   }
 
   async getUser(id: string) {
     const user = await this.usersRepository.findOne({
-      where: { id },
+      where: { id, isDeleted: false },
       relations: {
         orders: {
           shipments: {
             locality_origin: true,
             locality_destination: true,
           },
+          receipt: true,
         },
       },
     });
@@ -68,7 +69,7 @@ export class UsersRepository {
   }
 
   async updateUser(id: string, user: User): Promise<Partial<User>> {
-    const foundUser = await this.usersRepository.findOneBy({ id });
+    const foundUser = await this.usersRepository.findOne({where: { id, isDeleted: false }});
     if (!foundUser) {
       throw new NotFoundException(`User with id ${id} not found`);
     }
@@ -85,7 +86,7 @@ export class UsersRepository {
   ): Promise<Partial<User>> {
     const { oldPassword, newPassword } = data;
 
-    const foundUser = await this.usersRepository.findOneBy({ id });
+    const foundUser = await this.usersRepository.findOne({where: { id, isDeleted: false }});
     if (!foundUser) {
       throw new NotFoundException(`User with id ${id} not found`);
     }
@@ -107,7 +108,7 @@ export class UsersRepository {
   }
 
   async updateRoleUser(id: string, user: User): Promise<Partial<User>> {
-    const foundUser = await this.usersRepository.findOneBy({ id });
+    const foundUser = await this.usersRepository.findOne({where: { id, isDeleted: false }});
     if (!foundUser) {
       throw new NotFoundException(`User with id ${id} not found`);
     }
@@ -118,7 +119,7 @@ export class UsersRepository {
     return userNoPasswords;
   }
   async getUserByEmail(email: string) {
-    return await this.usersRepository.findOneBy({ email });
+    return await this.usersRepository.findOne({where: { email, isDeleted: false }});;
   }
   async preload() {
     const users = await this.usersRepository.find();
@@ -146,5 +147,14 @@ export class UsersRepository {
   async getAllUsers() {
     const users = await this.usersRepository.find();
     return users;
+  }
+
+  async deleteUser(id: string) {
+    const foundUser = await this.usersRepository.findOne({where: { id, isDeleted: false }});
+    if (!foundUser) throw new NotFoundException(`User with id:${id} not found`)
+
+    foundUser.isDeleted = true;
+    await this.usersRepository.save(foundUser);
+    return foundUser;
   }
 }
