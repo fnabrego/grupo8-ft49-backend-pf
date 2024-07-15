@@ -36,7 +36,6 @@ export class UpdateOrdertDto {
   })
   @IsString()
   @IsIn([
-    statusOrder.PENDING,
     statusOrder.AWAITING_PICKUP,
     statusOrder.SENDING,
     statusOrder.DELIVERED,
