@@ -31,8 +31,8 @@ export class CreateOrderDto {
 export class UpdateOrdertDto {
   @ApiProperty({
     description:
-      'Se reciebe un estado de envío: PENDING | AWAITING_PICKUP | SENDING | DELIVERED | CANCELLED',
-    example: 'aceptado',
+      'Se reciebe un estado de envío: "Pendiente de pago" | "Esperando retiro" | "En camino" | "Entregado" | "Cancelado"',
+    example: 'En camino',
   })
   @IsString()
   @IsIn([

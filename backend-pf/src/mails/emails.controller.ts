@@ -19,15 +19,28 @@ export class EmailController {
     return { message: 'E-mail sent' };
   }
   @Get('send/status/:id')
-  @ApiOperation({ summary: 'Enviar un email al cambiar el estado de una orden' })
+  @ApiOperation({
+    summary: 'Enviar un email al cambiar el estado de una orden',
+  })
   async sendEmailStatus(@Param('id', ParseUUIDPipe) id: string) {
     await this.emailService.sendEmailStatus(id);
     return { message: 'E-mail sent' };
   }
   @Get('send/updateUser/:id')
-  @ApiOperation({ summary: 'Enviar un email al cambiar la informacion del usuario' })
+  @ApiOperation({
+    summary: 'Enviar un email al cambiar la informacion del usuario',
+  })
   async sendEmailUpdateUser(@Param('id', ParseUUIDPipe) id: string) {
     await this.emailService.sendEmailUpdateUser(id);
+    return { message: 'E-mail sent' };
+  }
+  @Get('send/reviewUs/:id')
+  @ApiOperation({
+    summary:
+      'Enviar un email para que el usuario nos califique al cambiar el estado del envío a entregado',
+  })
+  async sendReviewUsEmail(@Param('id', ParseUUIDPipe) id: string) {
+    await this.emailService.sendReviewUsEmail(id);
     return { message: 'E-mail sent' };
   }
 }

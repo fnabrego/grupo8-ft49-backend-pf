@@ -20,4 +20,7 @@ export class EmailService {
   async automatedPromotionalEmails() {
     return await this.emailRepository.automatedPromotionalEmails();
   }
+  async sendReviewUsEmail(id: string) {
+    return await this.emailRepository.sendReviewUsEmail(id);
+  }
 }
