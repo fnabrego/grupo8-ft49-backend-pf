@@ -29,8 +29,25 @@ export class CreateOrderDto {
   shipment: ShipmentDto;
 
   @ApiProperty({
-    description: 'Recibe el objeto extraído del json de paypal, donde figura toda la info de pago',
-    example: {},
+    description: 'Recibe el objeto extraído del json de paypal, donde figura toda la info de pago \l aquí una fracción de código',
+    example: {
+      "id": "5AM67500XP511550A",
+      "status": "COMPLETED",
+      "payment_source": {
+        "paypal": {
+          "email_address": "sb-lr0ag31529458@personal.example.com",
+          "account_id": "2N7BJWPKKUC7U",
+          "account_status": "VERIFIED",
+          "name": {
+            "given_name": "John",
+            "surname": "Doe"
+          },
+          "address": {
+            "country_code": "AR"
+          }
+        }
+      }
+    }
   })
   @IsNotEmpty()
   dataPayment: PaypalPayment;
