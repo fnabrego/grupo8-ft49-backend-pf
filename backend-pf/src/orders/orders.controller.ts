@@ -11,7 +11,12 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto, QuoteOrderDto, UpdateOrdertDto } from './orders.dto';
 import { Roles } from 'src/decorators/roles.decorator';
@@ -62,8 +67,8 @@ export class OrdersController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() order: CreateOrderDto,
   ) {
-    const { packages, shipment } = order;
-    return this.ordersService.addOrder(id, packages, shipment);
+    const { packages, shipment, dataPayment } = order;
+    return this.ordersService.addOrder(id, packages, shipment, dataPayment);
   }
 
   @HttpCode(200)

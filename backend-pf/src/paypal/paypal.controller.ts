@@ -1,13 +1,14 @@
 import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { PaypalService } from './paypal.service';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
-import { ApiBody, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CapturePaypalOrderDto, CreatePaypalOrderDto } from './paypal.dto';
 
-@ApiTags('PayPal')
 @Controller('paypal')
+@ApiTags('Paypal')
+@ApiBearerAuth()
 export class PaypalController {
-  constructor(private readonly paypalService: PaypalService) {}
+  constructor(private readonly paypalService: PaypalService) { }
 
   @Post('create-order')
   @UseGuards(AuthGuard)
@@ -21,8 +22,10 @@ export class PaypalController {
   @Post('capture-order')
   @UseGuards(AuthGuard)
   @ApiOperation({ summary: 'Capturar la orden de compra aprobada por PayPal' })
-  @ApiBody({type: CapturePaypalOrderDto})
-  async captureOrder(@Body('orderId') orderId: string) {
+  @ApiBody({ type: CapturePaypalOrderDto })
+  async captureOrder(
+    @Body('orderId') orderId: string
+  ) {
     const captureData = await this.paypalService.captureOrder(orderId);
     return captureData;
   }

@@ -6,7 +6,9 @@ import * as paypal from '@paypal/checkout-server-sdk';
 export class PaypalService {
   private paypalClient: paypal.core.PayPalHttpClient;
 
-  constructor(private configService: ConfigService) {
+  constructor(
+    private configService: ConfigService,
+  ) {
     const clientId = this.configService.get<string>('paypal.clientId');
     const clientSecret = this.configService.get<string>('paypal.clientSecret');
     const mode = this.configService.get<string>('paypal.mode') || 'sandbox';
@@ -47,7 +49,8 @@ export class PaypalService {
 
     try {
       const response = await this.paypalClient.execute(request);
-      return response.result;
+      const data = response.result;
+      return data;
     } catch (error) {
       console.error('Error capturing order:', error);
       throw error;

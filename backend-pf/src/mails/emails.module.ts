@@ -6,6 +6,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/users/users.entity';
 import { UsersModule } from 'src/users/users.module';
 import * as cron from 'node-cron';
+import { config as dotenvConfig } from 'dotenv';
+dotenvConfig({ path: '.env.development' });
 
 @Module({
   imports: [TypeOrmModule.forFeature([User]), forwardRef(() => UsersModule)],
@@ -16,7 +18,7 @@ import * as cron from 'node-cron';
 export class EmailModule implements OnModuleInit {
   constructor(private readonly emailService: EmailService) {}
   async onModuleInit() {
-    cron.schedule('*/10 * * * *', async () => {
+    cron.schedule(process.env.EMAIL_TIME_AUTO, async () => {
       await this.emailService.automatedPromotionalEmails();
       console.log('Promotional emails sent');
     });

@@ -8,4 +8,4 @@ import { PaypalController } from './paypal.controller';
   providers: [PaypalService],
   controllers: [PaypalController],
 })
-export class PaypalModule {}
+export class PaypalModule { }

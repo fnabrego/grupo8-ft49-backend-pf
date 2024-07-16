@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { Receipt } from './receipts.entity';
@@ -54,5 +55,12 @@ export class ReceiptsRepository {
     const receiptUpdated = await this.receiptsRepository.save(foundReceipt);
 
     return receiptUpdated;
+  }
+  async deleteReceipt(id: string): Promise<Receipt>{
+    const foundReceipt = await this.receiptsRepository.findOneBy({ id });
+    if (!foundReceipt) throw new NotFoundException(`Receipt with id:${id} not found`);
+    const receiptDeleted = await this.receiptsRepository.delete(foundReceipt);
+    if (!receiptDeleted) throw new InternalServerErrorException(`Recepit with id:${id} fail deleted`)
+    return foundReceipt;
   }
 }

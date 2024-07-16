@@ -3,27 +3,20 @@ import { getDownloadURL, getStorage, list, ref, uploadBytes } from 'firebase/sto
 
 @Injectable()
 export class FirebaseService {
-  async uploadFile(file): Promise<string> {
+
+  async uploadFile(fileBuffer: Buffer, fileName: string): Promise<string> {
     const storage = getStorage()
-    // try {
-    //   await uploadBytes(storageRef, file.buffer);
-    //   console.log('Archivo subido a la nube');
-    //   return 'Archivo subido exitosamente';
-    // } catch (error: any) {
-    //   throw new Error(error);
-    // }
     const currentDate = new Date();
     const year = currentDate.getFullYear();
     const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-
-    const filePath = `Recibos/${year}/${month}/${file.originalname}`;
+    const filePath = `Recibos/${year}/${month}/${fileName}`;
     const storageRef = ref(storage, filePath);
 
     try {
-      await uploadBytes(storageRef, file.buffer);
+      await uploadBytes(storageRef, fileBuffer);
       console.log('File uploaded to the cloud');
-      // return 'File uploaded successfully';
-      return filePath;
+      const downloadUrl = await getDownloadURL(storageRef);
+      return downloadUrl;
     } catch (error: any) {
       throw new Error(error);
     }
@@ -47,7 +40,7 @@ export class FirebaseService {
     };
   }
 
-  async getDownloadUrl(filePath: string):Promise<string> {
+  async getDownloadUrl(filePath: string): Promise<string> {
     const storage = getStorage()
     const fileRef = ref(storage, filePath);
     const downloadUrl = await getDownloadURL(fileRef);
