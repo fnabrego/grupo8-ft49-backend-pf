@@ -14,7 +14,12 @@ import { UpdateUserDto } from './users.dto';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/roles/roles.enum';
 import { RoleDto } from 'src/roles/roles.dto';
-import { ApiBearerAuth, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { changePassword } from './changePassword.dto';
@@ -79,9 +84,7 @@ export class UsersController {
   @ApiOperation({ summary: 'Eliminar usuario' })
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.Admin, Role.User)
-  deleteUser(
-    @Param('id', ParseUUIDPipe) id: string
-  ) {
+  deleteUser(@Param('id', ParseUUIDPipe) id: string) {
     return this.userService.deleteUser(id);
   }
 }

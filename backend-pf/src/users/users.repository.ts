@@ -21,7 +21,7 @@ export class UsersRepository {
     @InjectRepository(User) private usersRepository: Repository<User>,
     @Inject(forwardRef(() => EmailRepository))
     private readonly emailRepository: EmailRepository,
-  ) { }
+  ) {}
 
   async getUsers(page: number, limit: number) {
     if (page < 1 || limit < 1) {
@@ -33,8 +33,7 @@ export class UsersRepository {
       where: { isDeleted: false },
       take: limit,
       skip: skip,
-    },
-    )
+    });
     return users.map(({ password, ...userNoPassword }) => userNoPassword);
   }
 
@@ -69,7 +68,9 @@ export class UsersRepository {
   }
 
   async updateUser(id: string, user: User): Promise<Partial<User>> {
-    const foundUser = await this.usersRepository.findOne({where: { id, isDeleted: false }});
+    const foundUser = await this.usersRepository.findOne({
+      where: { id, isDeleted: false },
+    });
     if (!foundUser) {
       throw new NotFoundException(`User with id ${id} not found`);
     }
@@ -86,7 +87,9 @@ export class UsersRepository {
   ): Promise<Partial<User>> {
     const { oldPassword, newPassword } = data;
 
-    const foundUser = await this.usersRepository.findOne({where: { id, isDeleted: false }});
+    const foundUser = await this.usersRepository.findOne({
+      where: { id, isDeleted: false },
+    });
     if (!foundUser) {
       throw new NotFoundException(`User with id ${id} not found`);
     }
@@ -108,7 +111,9 @@ export class UsersRepository {
   }
 
   async updateRoleUser(id: string, user: User): Promise<Partial<User>> {
-    const foundUser = await this.usersRepository.findOne({where: { id, isDeleted: false }});
+    const foundUser = await this.usersRepository.findOne({
+      where: { id, isDeleted: false },
+    });
     if (!foundUser) {
       throw new NotFoundException(`User with id ${id} not found`);
     }
@@ -119,7 +124,9 @@ export class UsersRepository {
     return userNoPasswords;
   }
   async getUserByEmail(email: string) {
-    return await this.usersRepository.findOne({where: { email, isDeleted: false }});;
+    return await this.usersRepository.findOne({
+      where: { email, isDeleted: false },
+    });
   }
   async preload() {
     const users = await this.usersRepository.find();
@@ -150,8 +157,10 @@ export class UsersRepository {
   }
 
   async deleteUser(id: string) {
-    const foundUser = await this.usersRepository.findOne({where: { id, isDeleted: false }});
-    if (!foundUser) throw new NotFoundException(`User with id:${id} not found`)
+    const foundUser = await this.usersRepository.findOne({
+      where: { id, isDeleted: false },
+    });
+    if (!foundUser) throw new NotFoundException(`User with id:${id} not found`);
 
     foundUser.isDeleted = true;
     await this.usersRepository.save(foundUser);

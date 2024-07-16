@@ -21,6 +21,16 @@ import { Roles } from 'src/decorators/roles.decorator';
 export class ReviewsController {
   constructor(private readonly reviewsService: ReviewsService) {}
 
+  @Get()
+  @ApiOperation({
+    summary: 'Obtener todas las Reviews, comentarios y rating',
+  })
+  @Roles(Role.Admin)
+  @UseGuards(AuthGuard, RolesGuard)
+  async getReviews() {
+    return await this.reviewsService.getReviews();
+  }
+
   @Post('/new/:id')
   @UseGuards(AuthGuard)
   @ApiOperation({ summary: 'Subir una reseña con id de usuario' })
@@ -35,15 +45,5 @@ export class ReviewsController {
   @ApiOperation({ summary: 'Obtener promedio de rating de Reviews' })
   async getRating() {
     return await this.reviewsService.getRating();
-  }
-
-  @Get()
-  @UseGuards(RolesGuard, AuthGuard)
-  @Roles(Role.Admin)
-  @ApiOperation({
-    summary: 'Obtener todas las Reviews, comentarios y rating',
-  })
-  async getReviews() {
-    return await this.reviewsService.getReviews();
   }
 }
