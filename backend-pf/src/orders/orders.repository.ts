@@ -140,7 +140,7 @@ export class OrdersRepository {
       await this.shipmentsRepository.deleteShipments(newShipment.id);
       throw new InternalServerErrorException('Create Order failled');
     }
-    await this.emailRepository.sendEmailOrder(id);
+    //await this.emailRepository.sendEmailOrder(id);
 
     const receipt = new Receipt();
     receipt.user = userNoPassword;
