@@ -19,7 +19,7 @@ export class PaypalController {
     return { orderId, approveUrl };
   }
 
-  @Post('capture-order/:id')
+  @Post('capture-order')
   @UseGuards(AuthGuard)
   @ApiOperation({ summary: 'Capturar la orden de compra aprobada por PayPal' })
   @ApiBody({ type: CapturePaypalOrderDto })
