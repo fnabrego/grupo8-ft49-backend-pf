@@ -10,26 +10,26 @@ export class FirebaseController {
     private readonly firebaseService: FirebaseService,
   ) {}
 
-  @Post('recibos')
-  @ApiOperation({ summary: 'Subir un recibo a Firebase Storage' })
-  @ApiConsumes('multipart/form-data')
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        file: {
-          type: 'string',
-          format: 'binary',
-        },
-      },
-    },
-  })
-  @UseInterceptors(FileInterceptor('file'))
-  async uploadFile(
-    @UploadedFile() file: Express.Multer.File,
-  ) {
-    return this.firebaseService.uploadFile(file);
-  }
+  // @Post('recibos')
+  // @ApiOperation({ summary: 'Subir un recibo a Firebase Storage' })
+  // @ApiConsumes('multipart/form-data')
+  // @ApiBody({
+  //   schema: {
+  //     type: 'object',
+  //     properties: {
+  //       file: {
+  //         type: 'string',
+  //         format: 'binary',
+  //       },
+  //     },
+  //   },
+  // })
+  // @UseInterceptors(FileInterceptor('file'))
+  // async uploadFile(
+  //   @UploadedFile() file: Express.Multer.File,
+  // ) {
+  //   return this.firebaseService.uploadFile(file);
+  // }
 
   @Get()
   @ApiOperation({ summary: 'Obtener la lista de recibos en un directorio con paginación' })

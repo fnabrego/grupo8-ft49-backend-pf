@@ -1,4 +1,3 @@
-
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "../users/users.entity";
 import { Order } from "../orders/orders.entity";
@@ -19,8 +18,7 @@ export class Receipt {
     order: Partial<Order>;
 
     @Column({
-        type: 'varchar',
-        length: 50,
+        type: 'text',
         nullable:true
     })
     link?: string;

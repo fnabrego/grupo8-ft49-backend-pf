@@ -67,8 +67,8 @@ export class OrdersController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() order: CreateOrderDto,
   ) {
-    const { packages, shipment } = order;
-    return this.ordersService.addOrder(id, packages, shipment);
+    const { packages, shipment, dataPayment } = order;
+    return this.ordersService.addOrder(id, packages, shipment, dataPayment);
   }
 
   @HttpCode(200)

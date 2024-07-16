@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards, Param, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { PaypalService } from './paypal.service';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -24,10 +24,9 @@ export class PaypalController {
   @ApiOperation({ summary: 'Capturar la orden de compra aprobada por PayPal' })
   @ApiBody({ type: CapturePaypalOrderDto })
   async captureOrder(
-    @Param('id', ParseUUIDPipe) id: string,
     @Body('orderId') orderId: string
   ) {
-    const captureData = await this.paypalService.captureOrder(orderId, id);
+    const captureData = await this.paypalService.captureOrder(orderId);
     return captureData;
   }
 }

@@ -27,6 +27,14 @@ export class CreateOrderDto {
   })
   @IsNotEmpty()
   shipment: ShipmentDto;
+
+  @ApiProperty({
+    description: 'Recibe el objeto extraído del json de paypal, donde figura toda la info de pago',
+    example: {},
+  })
+  @IsNotEmpty()
+  dataPayment: PaypalPayment;
+
 }
 export class UpdateOrdertDto {
   @ApiProperty({
