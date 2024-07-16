@@ -52,7 +52,7 @@ export class User {
   @Column({
     type: 'varchar',
     length: 30,
-    nullable: false,
+    nullable: true,
   })
   lastName: string;
 
