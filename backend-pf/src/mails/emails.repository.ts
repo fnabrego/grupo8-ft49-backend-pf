@@ -54,7 +54,8 @@ export class EmailRepository {
     };
 
     try {
-      const info = await this.transporter.sendMail(mailOptions);
+      //! const info = await this.transporter.sendMail(mailOptions);
+      const info = 'ok'
       return info;
     } catch (error: any) {
       throw new Error(`Error sending email: ${error.message}`);
@@ -75,7 +76,8 @@ export class EmailRepository {
     };
 
     try {
-      const info = await this.transporter.sendMail(mailOptions);
+      //! const info = await this.transporter.sendMail(mailOptions);
+      const info = 'ok'
       return info;
     } catch (error: any) {
       throw new Error(`Error sending email: ${error.message}`);
@@ -96,7 +98,8 @@ export class EmailRepository {
     };
 
     try {
-      const info = await this.transporter.sendMail(mailOptions);
+      //! const info = await this.transporter.sendMail(mailOptions);
+      const info = 'ok';
       return info;
     } catch (error: any) {
       throw new Error(`Error sending email: ${error.message}`);
@@ -117,7 +120,8 @@ export class EmailRepository {
     };
 
     try {
-      const info = await this.transporter.sendMail(mailOptions);
+      //!const info = await this.transporter.sendMail(mailOptions);
+      const info = 'ok';
       return info;
     } catch (error: any) {
       throw new Error(`Error sending email: ${error.message}`);
@@ -134,11 +138,11 @@ export class EmailRepository {
         html: html_promotional,
       };
 
-      try {
-        await this.transporter.sendMail(mailOptions);
-      } catch (error: any) {
-        throw new Error(`Error sending email: ${error.message}`);
-      }
+      //! try {
+      //! await this.transporter.sendMail(mailOptions);
+      //! } catch (error: any) {
+      //!   throw new Error(`Error sending email: ${error.message}`);
+      //! }
     }
   }
   async sendReviewUsEmail(id: string) {
@@ -155,7 +159,8 @@ export class EmailRepository {
     };
 
     try {
-      const info = await this.transporter.sendMail(mailOptions);
+      //! const info = await this.transporter.sendMail(mailOptions);
+      const info = 'ok';
       return info;
     } catch (error: any) {
       throw new Error(`Error sending email: ${error.message}`);
