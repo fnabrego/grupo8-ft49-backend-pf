@@ -17,6 +17,8 @@ import { statusOrder } from './statusOrder.enum';
 import { EmailRepository } from 'src/mails/emails.repository';
 import { Receipt } from '../receipts/receipts.entity';
 import { ReceiptsRepository } from '../receipts/receipts.repository';
+import { PdfService } from '../pdf/pdf.service';
+import { FirebaseService } from '../firebase/firebase.service';
 
 @Injectable()
 export class OrdersRepository {
@@ -27,7 +29,9 @@ export class OrdersRepository {
     private readonly shipmentsRepository: ShipmentsRepository,
     private readonly emailRepository: EmailRepository,
     private readonly receiptRepository: ReceiptsRepository,
-  ) {}
+    private readonly pdfService: PdfService,
+    private readonly firebaseService: FirebaseService
+  ) { }
 
   async getOrder(id: string): Promise<Order> {
     const order = await this.ordersRepo.findOne({
@@ -104,6 +108,7 @@ export class OrdersRepository {
     id: string,
     packages: PackageDto,
     shipment: ShipmentDto,
+    dataPayment: PaypalPayment,
   ): Promise<Order> {
     const user = await this.usersRepo.findOneBy({ id });
     if (!user) throw new NotFoundException('User invalid');
@@ -141,11 +146,24 @@ export class OrdersRepository {
     receipt.user = userNoPassword;
     const newReceipt = await this.receiptRepository.createReceipt(receipt);
     confirmOrder.receipt = newReceipt;
-    const finalOrder = await this.ordersRepo.save(confirmOrder);
+    const saveOrder = await this.ordersRepo.save(confirmOrder);
+
+    const pdfBuffer = await this.pdfService.generateReceipt(dataPayment);
+    const fileName = `${dataPayment.id}.pdf`;
+
+    const link = await this.firebaseService.uploadFile(pdfBuffer, fileName);
+    const loadReceipt = await this.receiptRepository.updateReceipt(newReceipt.id, link);
+
+    if (!loadReceipt) throw new InternalServerErrorException('Fail load link Receipt');
+    const finalOrder = await this.ordersRepo.findOne({
+      where: { id: saveOrder.id, isDeleted: false },
+      relations: ['user', 'shipments', 'packages', 'receipt'],
+    });
 
     if (!finalOrder) {
       await this.packagesRepository.deletePackage(newPackage.id);
       await this.shipmentsRepository.deleteShipments(newShipment.id);
+      await this.receiptRepository.deleteReceipt(newReceipt.id);
       throw new InternalServerErrorException('Create Order failled');
     }
     return finalOrder;
@@ -162,7 +180,6 @@ export class OrdersRepository {
     const { status } = data;
     const order = new Order();
     order.status = status;
-    // order.receipt = receipt;
     await this.ordersRepo.update(id, order);
     const orderCheck = await this.ordersRepo.findOneBy({ id });
     if (orderCheck.status === 'Entregado')

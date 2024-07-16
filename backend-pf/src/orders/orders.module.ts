@@ -16,6 +16,8 @@ import { PackagePrices } from '../packages/prices.entity';
 import { EmailRepository } from 'src/mails/emails.repository';
 import { UsersRepository } from 'src/users/users.repository';
 import { ReceiptsRepository } from '../receipts/receipts.repository';
+import { PdfService } from '../pdf/pdf.service';
+import { FirebaseService } from '../firebase/firebase.service';
 
 @Module({
   imports: [
@@ -38,7 +40,9 @@ import { ReceiptsRepository } from '../receipts/receipts.repository';
     PackagesRepository,
     EmailRepository,
     UsersRepository,
-    ReceiptsRepository
+    ReceiptsRepository,
+    PdfService,
+    FirebaseService,
   ],
 })
 export class OrdersModule {}

@@ -18,8 +18,8 @@ export class OrdersService {
     return this.ordersRepository.quoteOrder(packages, shipment);
   }
 
-  addOrder(id: string, packages: PackageDto, shipment: ShipmentDto) {
-    return this.ordersRepository.addOrder(id, packages, shipment);
+  addOrder(id: string, packages: PackageDto, shipment: ShipmentDto, dataPayment: PaypalPayment) {
+    return this.ordersRepository.addOrder(id, packages, shipment, dataPayment);
   }
 
   updateOrder(id: string, data: UpdateOrdertDto) {

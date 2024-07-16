@@ -38,7 +38,7 @@ export class ReceiptsController {
         @UploadedFile() file: Express.Multer.File,
         @Param('id', ParseUUIDPipe) id: string,
     ) {
-        const link = await this.firebaseService.uploadFile(file);
+        const link = await this.firebaseService.uploadFile(file.buffer, file.filename);
         return this.receiptService.updateReceipt(id, link);
     }
 }
