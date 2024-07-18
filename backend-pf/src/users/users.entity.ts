@@ -121,10 +121,9 @@ export class User {
     type: 'varchar',
     length: 300,
     nullable: true,
-    default: 'https://cdn-icons-png.flaticon.com/512/6676/6676016.png',
   })
   profilePicture: string;
-/**
+  /**
    * @description Estado eliminacion, en false indica que existe
    * @example 'false'
    */
@@ -142,5 +141,4 @@ export class User {
   @OneToMany(() => Review, (review) => review.user)
   @JoinColumn()
   reviews: Review[];
-
 }
